@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Crear Producto</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<a href="/producto">Productos</a>
+	<a href="/categoria">Categorias</a>
+	<br>
+	<form action='/producto'>
+		Nombre: <input type="text" name="nombre">
+		<br>
+		Categoria:
+		<select>
+			<option value="...">...</option>
+		</select>
+		<br>
+		ID: <input type="text" name="id">
+		<br>
+		Precio: <input type="text" name="precio">
+		<br>
+		Cantidad: <input type="text" name="cantidad">
+		<br>
+		Descripcion: <textarea name="descripcion" rows ="10" cols="30"></textarea>
+		<br>
+		<input type="submit" value='Crear'>
+	</form>
+	
+	<a class="btn-cancelar" href="/producto">
+		<button type="button">Cancelar</button>
+	</a>
+</body>
+</html>

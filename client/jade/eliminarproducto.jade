@@ -1,0 +1,28 @@
+doctype html
+head
+  title Eliminar Producto
+  meta(charset='UTF-8')
+a(href='/producto') Productos
+a(href='/categoria') Categorias
+br
+table(style='width:60%')
+  tr
+    th Id
+    th Nombre
+    th Precio
+    th Stock
+    th Descripcion
+    th Categoria
+  tr
+    th
+      input(type='checkbox')
+      | Id
+    th Nombre
+    th Precio
+    th Stock
+    th Descripcion
+    th Categoria
+br
+button(type='button') Eliminar
+a.btn-cancelar(href='/producto')
+  button.btn-cancelar(type='button') Cancelar

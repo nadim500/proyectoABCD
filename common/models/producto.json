@@ -1,0 +1,38 @@
+    {
+    "name": "Producto",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "id": {
+            "type": "number",
+            "required": false
+        },
+        "nombre": {
+            "type": "string",
+            "required": true
+        },
+        "precio": {
+            "type": "string",
+            "required": true
+        },
+        "cantidad": {
+            "type": "string"
+        },
+        "descripcion": {
+            "type": "string"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "categorias": {
+            "type": "belongsTo",
+            "model": "Categoria",
+            "foreignKey": "categoriaId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

@@ -1,0 +1,29 @@
+doctype html
+head
+  title Menu Categoria
+  meta(charset='UTF-8')
+body
+  a(href='/producto') Productos
+  a(href='/categoria') Categorias
+  br
+  table(style='width:60%')
+    tr
+      th Id
+      th Nombre
+      th Descripcion
+    each categoria in objResult
+      tr
+        th #{categoria.id}
+        th 
+          a(href='/producto?idCategoria='+categoria.id) #{categoria.nombre}
+        th #{categoria.descripcion}
+  br
+  a.btn-crear(href='/categoria/crear')
+    button.btn-crear(type='button') Crear
+  a.btn-listar(href='/categoria/listar')
+    button.btn-listar(type='button') Listar
+  a.btn-editar(href='/categoria/editar')
+    button.btn-editar(type='button') Editar
+  a.btn-eliminar(href='/categoria/eliminar')
+    button.btn-eliminar(type='button') Eliminar
+  br

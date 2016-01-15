@@ -1,0 +1,26 @@
+doctype html
+head
+  title Menu Categoria
+  meta(charset='UTF-8')
+body
+  a(href='/producto') Productos
+  a(href='/categoria') Categorias
+  br
+  table(style='width:60%')
+    tr
+      th Id
+      th Nombre
+      th Descripcion
+    each categoria in objResult
+      tr
+        th
+          input(type='checkbox')
+          |  #{categoria.id}
+        th #{categoria.nombre}
+        th #{categoria.descripcion}
+  br
+  a.btn-listar(href='/categoria/listar')
+    button.btn-listar(type='button') Listar
+  a.btn-cancelar(href='/categoria')
+    button.btn-cancelar(type='button') Cancelar
+  br

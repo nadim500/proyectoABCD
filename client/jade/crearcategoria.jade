@@ -1,0 +1,19 @@
+doctype html
+head
+  title Crear Categoria
+  meta(charset='UTF-8')
+body
+  a(href='/producto') Productos
+  a(href='/categoria') Categorias
+  if message != undefined
+    p #{message}
+  form(action="/categoria" method="post")
+    label Nombre: 
+    input(type="text", name='nombre')
+    br
+    label Descripcion: 
+    textarea(name='descripcion', rows='10', cols='30')
+    input(type="submit" value="guardar")
+  br
+  a.btn-cancelar(href='/categoria')
+    button.btn-cancelar(type='botton') Cancelar

@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title Test
+    meta(charset='UTF-8')
+  body
+    form(action='/auth/login', method='post')
+      label Usuario:
+      br
+      input(type='text', name='form_usuario')
+      br
+      label Contraseña:
+      br
+      input.login-screen(type='password', name='form_password')
+      br
+      input(type='submit', value='Entrar')
+      br
+    label Nuevo usuario, cree su cuenta :
+    br
+    button(type='button', onclick='irLogin()') Crear

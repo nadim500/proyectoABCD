@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    title Menu Productos
+    meta(charset='UTF-8')
+  body
+    a(href='/producto') Productos
+    a(href='/categoria') Categorias
+    br
+    table(style='width:60%')
+      tr
+        th Id
+        th Nombre
+        th Precio
+        th Stock
+        th Descripcion
+        th Categoria
+      each producto in objResult_producto
+        tr
+          th #{producto.id}
+          th #{producto.nombre}
+          th #{producto.precio}
+          th #{producto.cantidad}
+          th #{producto.descripcion}
+          each categoria in objResult_categoria
+            if producto.categoriaId == categoria.id
+              th #{categoria.nombre}
+    br
+    a.btn-crear(href='/producto/crear')
+      button.btn-crear(type='button') Crear
+    a.btn-editar(href='/producto/editar')
+      button.btn-editar(type='button') Editar
+    a.btn-eliminar(href='/producto/eliminar')
+      button.btn-eliminar(type='button') Eliminar
+      br

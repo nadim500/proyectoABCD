@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title Editar Produto
+    meta(charset='UTF-8')
+  body
+    a(href='/producto') Productos
+    a(href='/categoria') Categorias
+    br
+    form
+      | Nombre: 
+      input(type='text', name='nuevoNombre')
+      br
+      |     Categoria:
+      select
+        option(value='...') ...
+      br
+      |     Id: 
+      input(type='text', name='nuevoId')
+      br
+      |     Precio: 
+      input(type='text', name='nuevoPrecio')
+      br
+      |     Cantidad: 
+      input(type='text', name='nuevoCantidad')
+      br
+      |     Descripcion: 
+      textarea(name='descripcion', rows='10', cols='30')
+      br
+    button(type='button') Eliminar
+    button(type='button') Guardar cambios
+    a.btn-cancelar(href='/producto')
+      button.btn-cancelar(type='button') Cancelar

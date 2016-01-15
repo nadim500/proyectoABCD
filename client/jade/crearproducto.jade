@@ -1,0 +1,32 @@
+doctype html
+head
+  title Crear Producto
+  meta(charset='UTF-8')
+body
+  a(href='/producto') Productos
+  a(href='/categoria') Categorias
+  if message != undefined
+    p #{message}
+  br
+  form(action='/producto' method='post')
+    label Nombre: 
+    input(type='text', name='nombre')
+    br
+    label Categoria:
+    - console.log( "->", objResult )
+    select(name='categoriaId')
+      each categoria in objResult_categoria
+        option(value=categoria.id) #{categoria.nombre}
+    br
+    label Precio: 
+    input(type='text', name='precio')
+    br
+    label Cantidad: 
+    input(type='text', name='cantidad')
+    br
+    label Descripcion: 
+    textarea(name='descripcion', rows='10', cols='30')
+    br
+    input(type='submit' value='Crear')
+  a.btn-cancelar(href='/producto')
+    button.btn-cancelar(type='button') Cancelar

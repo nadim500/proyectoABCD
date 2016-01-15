@@ -1,0 +1,22 @@
+doctype html
+head
+  title Editar Categoria
+  meta(charset='UTF-8')
+  link(href="css/flat-ui.min.css" rel="stylesheet")
+body
+  a(href='/producto') Productos
+  a(href='/categoria') Categorias
+  form
+    | Nombre: 
+    input(type='text', name='nuevaNombre')
+    br
+    |     Id: 
+    input(type='text', name='nuevoId')
+    br
+    |     Descripcion: 
+    textarea(name='nuevaDescripcion', rows='10', cols='30')
+  br
+  button(style='button') Eliminar
+  button(style='button') Guardar Cambios
+  a.btn-cancelar(href='/categoria')
+    button.btn-cancelar(style='button') Cancelar
