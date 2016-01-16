@@ -51,8 +51,8 @@ module.exports = function(app) {
     });
 
     router.get('/producto', function(req, res) {
-        var idCategoria = req.query.idCategoria;
-        console.log(idCategoria);
+        //var idCategoria = req.query.idCategoria;
+        //console.log(idCategoria);
         Categoria.find({}, function(err, objResult_categoria) {
             Producto.find({}, function(err, objResult_producto) {
                 if (err) res.sendStatus(404);
@@ -62,17 +62,22 @@ module.exports = function(app) {
                 });
             });
         });
+        //me da los resultados del producto incluido el 
+        //resultado de la categoria en cada producto
+        Producto.find({include:'categorias'},function(err, objResult) {
+                console.log(objResult);
+            });
     });
 
     router.post('/producto', function(req, res) {
         var nuevoProducto = {
-            nombre: req.body.nombre,
-            precio: req.body.precio,
-            cantidad: req.body.cantidad,
-            descripcion: req.body.descripcion,
-            categoriaId: req.body.categoriaId
-        }
-        console.log(nuevoProducto);
+                nombre: req.body.nombre,
+                precio: req.body.precio,
+                cantidad: req.body.cantidad,
+                descripcion: req.body.descripcion,
+                categoriaId: req.body.categoriaId
+            }
+            //console.log(nuevoProducto);
 
 
         Categoria.find({}, function(err, objResult_categoria) {
