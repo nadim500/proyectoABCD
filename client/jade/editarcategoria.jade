@@ -2,21 +2,25 @@ doctype html
 head
   title Editar Categoria
   meta(charset='UTF-8')
-  link(href="css/flat-ui.min.css" rel="stylesheet")
 body
   a(href='/producto') Productos
   a(href='/categoria') Categorias
-  form
-    | Nombre: 
-    input(type='text', name='nuevaNombre')
-    br
-    |     Id: 
-    input(type='text', name='nuevoId')
-    br
-    |     Descripcion: 
-    textarea(name='nuevaDescripcion', rows='10', cols='30')
-  br
-  button(style='button') Eliminar
-  button(style='button') Guardar Cambios
+  form(action='/editarCategoria' method='post')
+    each categoria in objResult_categoria
+      label Nombre: 
+      input(type='text' name='nuevoNombre' placeholder='#{categoria.nombre}')
+      br
+      label Descripcion:
+      textarea(name='nuevaDescripcion' rows='10', cols='30' placeholder=categoria.descripcion)
+      br
+      label Id: 
+      select(name='categoriaId')
+        option(value=categoria.id) #{categoria.id}
+      br
+    input(type='submit' value='Guardar Cambios')
+  form(action='/eliminar/categoria' method='post')
+    each categoria in objResult_categoria
+      input(type='hidden' name='idCategoria' value=categoria.id)
+      input(type='submit' value='Eliminar')
   a.btn-cancelar(href='/categoria')
     button.btn-cancelar(style='button') Cancelar

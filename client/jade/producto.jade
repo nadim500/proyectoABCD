@@ -7,29 +7,29 @@ html
     a(href='/producto') Productos
     a(href='/categoria') Categorias
     br
-    table(style='width:60%')
-      tr
-        th Id
-        th Nombre
-        th Precio
-        th Stock
-        th Descripcion
-        th Categoria
-      each producto in objResult_producto
+    form(action='/producto/editar' method='post')
+      table(style='width:60%')
         tr
-          th #{producto.id}
-          th #{producto.nombre}
-          th #{producto.precio}
-          th #{producto.cantidad}
-          th #{producto.descripcion}
-          each categoria in objResult_categoria
-            if producto.categoriaId == categoria.id
-              th #{categoria.nombre}
+          th Id
+          th Nombre
+          th Precio
+          th Stock
+          th Descripcion
+          th Categoria
+        each producto in objResult_producto
+          tr
+            th
+              input(type='radio' name='idProducto' value=producto.id)
+              | #{producto.id}
+            th #{producto.nombre}
+            th #{producto.precio}
+            th #{producto.cantidad}
+            th #{producto.descripcion}
+            //-each categoria in objResult_categoria
+              if producto.categoriaId == categoria.id
+                th #{categoria.nombre}
+            th #{producto.categorias.nombre}
+      input(type='submit' value='Editar')
     br
     a.btn-crear(href='/producto/crear')
       button.btn-crear(type='button') Crear
-    a.btn-editar(href='/producto/editar')
-      button.btn-editar(type='button') Editar
-    a.btn-eliminar(href='/producto/eliminar')
-      button.btn-eliminar(type='button') Eliminar
-      br

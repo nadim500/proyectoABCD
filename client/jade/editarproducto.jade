@@ -7,27 +7,34 @@ html
     a(href='/producto') Productos
     a(href='/categoria') Categorias
     br
-    form
-      | Nombre: 
-      input(type='text', name='nuevoNombre')
-      br
-      |     Categoria:
-      select
-        option(value='...') ...
-      br
-      |     Id: 
-      input(type='text', name='nuevoId')
-      br
-      |     Precio: 
-      input(type='text', name='nuevoPrecio')
-      br
-      |     Cantidad: 
-      input(type='text', name='nuevoCantidad')
-      br
-      |     Descripcion: 
-      textarea(name='descripcion', rows='10', cols='30')
-      br
-    button(type='button') Eliminar
-    button(type='button') Guardar cambios
+    form(action='/editarproducto' method='post')
+      each producto in objResult_producto
+        label Nombre: 
+        input(type='text' name='nuevoNombre' placeholder='#{producto.nombre}')
+        br
+        label Categoria:
+        select(name='idCategoria')
+          each categoria in objResult_categoria
+            option(value=categoria.id) #{categoria.nombre}
+        br
+        label Id: 
+        select(name='idProducto')
+          option(value=producto.id) #{producto.id}
+        br
+        label Precio: 
+        input(type='text' name='nuevoPrecio' placeholder='#{producto.precio}')
+        br
+        label Cantidad: 
+        input(type='text' name='nuevoCantidad' placeholder='#{producto.cantidad}')
+        br
+        label Descripcion: 
+        textarea(name='nuevoDescripcion' rows='10', cols='30' placeholder='#{producto.descripcion}')
+        br
+      input(type='submit' value='Guardar cambios')
+    br
+    form(action='/producto/eliminar' method='post')
+      each producto in objResult_producto
+        input(type='hidden' name='idProducto' value=producto.id)
+        input(type='submit' value='Eliminar')
     a.btn-cancelar(href='/producto')
       button.btn-cancelar(type='button') Cancelar

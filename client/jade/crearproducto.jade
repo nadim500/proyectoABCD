@@ -10,7 +10,7 @@ body
   br
   form(action='/producto' method='post')
     label Nombre: 
-    input(type='text', name='nombre')
+    input(type='text' name='nombre')
     br
     label Categoria:
     - console.log( "->", objResult )
@@ -19,13 +19,13 @@ body
         option(value=categoria.id) #{categoria.nombre}
     br
     label Precio: 
-    input(type='text', name='precio')
+    input(type='text' name='precio')
     br
     label Cantidad: 
-    input(type='text', name='cantidad')
+    input(type='text' name='cantidad')
     br
     label Descripcion: 
-    textarea(name='descripcion', rows='10', cols='30')
+    textarea(name='descripcion' rows='10' cols='30')
     br
     input(type='submit' value='Crear')
   a.btn-cancelar(href='/producto')
