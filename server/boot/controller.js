@@ -5,19 +5,70 @@ module.exports = function(app) {
 
     var Categoria = app.models.Categoria;
     var Producto = app.models.Producto;
+    var Usuario = app.models.Usuario;
+
+    router.get('/nuevoUsuario', function(req, res) {
+        console.log("********");
+        return res.render('nuevoUsuario');
+    });
+
+    router.post('/nuevoUsuario', function(req, res) {
+        var nuevoUsuario = {
+            nombre: req.body.nombre,
+            username: req.body.usuario,
+            password: req.body.password
+        }
+        console.log("---->", nuevoUsuario);
+
+        password = req.body.password;
+        password1 = req.body.password1;
+        if (password == password1) {
+            Usuario.create(nuevoUsuario, function(err, objResult) {
+                if (err) return res.sendStatus(404);
+                return res.render('nuevoUsuario',{
+                    message:"usuario creado con exito"
+                })
+            });
+        } else {
+
+            console.log("____-------_____-");
+            res.render('nuevoUsuario', {
+                message: "las contraseñas no concuerdan"
+            });
+        }
+    });
+
+
 
     router.post('/auth/login', function(req, res) {
-        var root = {
-            usuario: 'root',
-            password: 'root'
-        };
-        var persona = {
-            usuario: req.body.form_usuario,
-            password: req.body.form_password
-        };
-        if ((root.usuario == persona.usuario) && (root.password == persona.password)) {
-            res.render('principal');
-        }
+        //var root = {
+        //    usuario: 'root',
+        //    password: 'root'
+        //};
+        //var persona = {
+        //    usuario: req.body.form_usuario,
+        //    password: req.body.form_password
+        //};
+        //if ((root.usuario == persona.usuario) && (root.password == persona.password)) {
+        //    res.render('principal');
+        //}
+
+        var user = req.body.form_usuario;
+        var contr = req.body.form_password;
+        Usuario.find({
+            where: {
+                username: user,
+                password: contr
+            }
+        }, function(err, objResult_usuario) {
+            console.log(objResult_usuario);
+            if (err) res.sendStatus(404);
+            if (objResult_usuario.length == 0) return res.render('login', {
+                message: "usuario no registrado"
+            })
+            if(objResult_usuario.length >0) return res.render('principal')
+        })
+
     });
 
     router.get('/', function(req, res) {
@@ -112,18 +163,18 @@ module.exports = function(app) {
         if (idCategoria != undefined) {
 
             Producto.find({
-                    where: {
-                        categoriaId: idCategoria
-                    },
-                    include: ['categorias']
-                }, function(err, objResult_producto) {
-                    if(err) return res.sendStatus(404);
-                    objResult_producto=objResult_producto.map(function(obj){
-                        return obj.toJSON();
-                    })
-                    res.render('producto',{
-                        objResult_producto:objResult_producto
-                    })
+                where: {
+                    categoriaId: idCategoria
+                },
+                include: ['categorias']
+            }, function(err, objResult_producto) {
+                if (err) return res.sendStatus(404);
+                objResult_producto = objResult_producto.map(function(obj) {
+                    return obj.toJSON();
+                })
+                res.render('producto', {
+                    objResult_producto: objResult_producto
+                })
             })
 
             //Categoria.find({}, function(err, objResult_categoria) {
@@ -142,7 +193,9 @@ module.exports = function(app) {
 
             //Producto.find({include:categorias:['tipo']})
 
-        } else Producto.find({include: ['categorias']}, function(err, objResult_producto) {
+        } else Producto.find({
+            include: ['categorias']
+        }, function(err, objResult_producto) {
             if (err) return res.sendStatus(404);
             objResult_producto = objResult_producto.map(function(obj) {
                 return obj.toJSON();
@@ -150,14 +203,14 @@ module.exports = function(app) {
             return res.render('producto', {
                 objResult_producto: objResult_producto
 
-    //Categoria.find({}, function(err, objResult_categoria) {
-    //    Producto.find({}, function(err, objResult_producto) {
-    //        if (err) res.sendStatus(404);
-    //        else res.render('producto', {
-    //            objResult_producto: objResult_producto,
-    //            objResult_categoria: objResult_categoria
-    //        });
-    //    });
+                //Categoria.find({}, function(err, objResult_categoria) {
+                //    Producto.find({}, function(err, objResult_producto) {
+                //        if (err) res.sendStatus(404);
+                //        else res.render('producto', {
+                //            objResult_producto: objResult_producto,
+                //            objResult_categoria: objResult_categoria
+                //        });
+                //    });
 
             });
         });
@@ -211,13 +264,15 @@ module.exports = function(app) {
             if (err) return res.sendStatus(404)
         });
 
-        Producto.find({include:['categorias']},function(err,objResult_producto){
-            if(err) return res.sendStatus(404);
-            objResult_producto=objResult_producto.map(function(obj){
+        Producto.find({
+            include: ['categorias']
+        }, function(err, objResult_producto) {
+            if (err) return res.sendStatus(404);
+            objResult_producto = objResult_producto.map(function(obj) {
                 return obj.toJSON();
             });
-            res.render('producto',{
-                objResult_producto:objResult_producto
+            res.render('producto', {
+                objResult_producto: objResult_producto
             })
         });
 

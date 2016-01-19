@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title REGISTRAR USUARIO
+    meta(charset='UTF-8')
+  body
+    h1 NUEVO USUARIO
+    form(action='/nuevoUsuario' method='post')
+      label Nombre: 
+      input(type='text', name='nombre')
+      br
+      label Usuario: 
+      input(type='text', name='usuario')
+      br
+      label Contraseña: 
+      input(type='password', name='password')
+      br
+      label Ingrese otra vez su contraseña
+      br
+      label Contraseña: 
+      input(type='password', name='password1')
+      br
+      input(type='submit', value='Crear')
+    if message!=undefined
+      label #{message}
+      br
+    a.btn-cancelar(href='/login')
+      button.btn-cancelar(type='button') Login

@@ -1,5 +1,5 @@
 {
-  "name": "Categoria",
+  "name": "Usuario",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -14,18 +14,17 @@
       "type": "string",
       "required": false
     },
-    "descripcion": {
-      "type": "string"
+    "username": {
+      "type": "string",
+      "required": false
+    },
+    "password": {
+      "type": "string",
+      "required": false 
     }
   },
   "validations": [],
-  "relations": {
-    "productos": {
-      "type": "hasMany",
-      "model": "Producto",
-      "foreignKey": "categoriaId"
-    }
-  },
+  "relations": {},
   "acls": [],
   "methods": {}
 }

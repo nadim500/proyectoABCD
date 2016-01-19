@@ -39,5 +39,9 @@
   "Categoria": {
     "dataSource": "db",
     "public": true
+  },
+  "Usuario": {
+    "dataSource": "db",
+    "public": true
   }
 }
