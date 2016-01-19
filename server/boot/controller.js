@@ -6,6 +6,7 @@ module.exports = function(app) {
     var Categoria = app.models.Categoria;
     var Producto = app.models.Producto;
     var Usuario = app.models.Usuario;
+    var sesion = false;
 
     router.get('/nuevoUsuario', function(req, res) {
         console.log("********");
@@ -25,8 +26,8 @@ module.exports = function(app) {
         if (password == password1) {
             Usuario.create(nuevoUsuario, function(err, objResult) {
                 if (err) return res.sendStatus(404);
-                return res.render('nuevoUsuario',{
-                    message:"usuario creado con exito"
+                return res.render('nuevoUsuario', {
+                    message: "usuario creado con exito"
                 })
             });
         } else {
@@ -52,7 +53,6 @@ module.exports = function(app) {
         //if ((root.usuario == persona.usuario) && (root.password == persona.password)) {
         //    res.render('principal');
         //}
-
         var user = req.body.form_usuario;
         var contr = req.body.form_password;
         Usuario.find({
@@ -66,7 +66,10 @@ module.exports = function(app) {
             if (objResult_usuario.length == 0) return res.render('login', {
                 message: "usuario no registrado"
             })
-            if(objResult_usuario.length >0) return res.render('principal')
+            if (objResult_usuario.length > 0) {
+                sesion = true;
+                return res.render('principal')
+            }
         })
 
     });
@@ -76,7 +79,8 @@ module.exports = function(app) {
     });
 
     router.get('/principal', function(req, res) {
-        res.render('principal');
+        if (sesion) return res.render('principal');
+        else return res.redirect('login');
     });
 
     router.get('/login', function(req, res) {
@@ -85,17 +89,20 @@ module.exports = function(app) {
 
 
     router.get('/producto/crear', function(req, res) {
-        Categoria.find({}, function(err, objResult_categoria) {
-            if (err) res.sendStatus(404)
-            res.render('crearproducto', {
-                objResult_categoria: objResult_categoria
-            })
-        });
+        if (sesion) {
+            Categoria.find({}, function(err, objResult_categoria) {
+                if (err) return res.sendStatus(404)
+                return res.render('crearproducto', {
+                    objResult_categoria: objResult_categoria
+                });
+            });
+        } else return res.redirect('login');
     });
 
     router.get('/producto/editar', function(req, res) {
 
-        res.render('editarproducto');
+        if (sesion) return res.render('editarproducto');
+        else return res.redirect('login');
     });
 
     router.post('/producto/editar', function(req, res) {
@@ -153,67 +160,66 @@ module.exports = function(app) {
         });
     });
 
-    router.get('/producto/eliminar', function(req, res) {
-        res.render('eliminarproducto');
-    });
-
     router.get('/producto', function(req, res) {
-        var idCategoria = req.query.idCategoria;
-        console.log(idCategoria);
-        if (idCategoria != undefined) {
+        if (sesion) {
+            var idCategoria = req.query.idCategoria;
+            console.log(idCategoria);
+            if (idCategoria != undefined) {
 
-            Producto.find({
-                where: {
-                    categoriaId: idCategoria
-                },
+                Producto.find({
+                    where: {
+                        categoriaId: idCategoria
+                    },
+                    include: ['categorias']
+                }, function(err, objResult_producto) {
+                    if (err) return res.sendStatus(404);
+                    objResult_producto = objResult_producto.map(function(obj) {
+                        return obj.toJSON();
+                    })
+                    res.render('producto', {
+                        objResult_producto: objResult_producto
+                    })
+                })
+
+                //Categoria.find({}, function(err, objResult_categoria) {
+                //    Producto.find({
+                //        where: {
+                //            categoriaId: idCategoria
+                //        }
+                //    }, function(err, objResult_producto) {
+                //        if (err) res.sendStatus(404);
+                //        else res.render('producto', {
+                //            objResult_categoria: objResult_categoria,
+                //            objResult_producto: objResult_producto
+                //        });
+                //    });
+                //});
+
+                //Producto.find({include:categorias:['tipo']})
+
+            } else Producto.find({
                 include: ['categorias']
             }, function(err, objResult_producto) {
                 if (err) return res.sendStatus(404);
                 objResult_producto = objResult_producto.map(function(obj) {
                     return obj.toJSON();
-                })
-                res.render('producto', {
+                });
+                return res.render('producto', {
                     objResult_producto: objResult_producto
-                })
-            })
 
-            //Categoria.find({}, function(err, objResult_categoria) {
-            //    Producto.find({
-            //        where: {
-            //            categoriaId: idCategoria
-            //        }
-            //    }, function(err, objResult_producto) {
-            //        if (err) res.sendStatus(404);
-            //        else res.render('producto', {
-            //            objResult_categoria: objResult_categoria,
-            //            objResult_producto: objResult_producto
-            //        });
-            //    });
-            //});
+                    //Categoria.find({}, function(err, objResult_categoria) {
+                    //    Producto.find({}, function(err, objResult_producto) {
+                    //        if (err) res.sendStatus(404);
+                    //        else res.render('producto', {
+                    //            objResult_producto: objResult_producto,
+                    //            objResult_categoria: objResult_categoria
+                    //        });
+                    //    });
 
-            //Producto.find({include:categorias:['tipo']})
-
-        } else Producto.find({
-            include: ['categorias']
-        }, function(err, objResult_producto) {
-            if (err) return res.sendStatus(404);
-            objResult_producto = objResult_producto.map(function(obj) {
-                return obj.toJSON();
+                });
             });
-            return res.render('producto', {
-                objResult_producto: objResult_producto
-
-                //Categoria.find({}, function(err, objResult_categoria) {
-                //    Producto.find({}, function(err, objResult_producto) {
-                //        if (err) res.sendStatus(404);
-                //        else res.render('producto', {
-                //            objResult_producto: objResult_producto,
-                //            objResult_categoria: objResult_categoria
-                //        });
-                //    });
-
-            });
-        });
+        } else
+            return res.redirect('login');
     });
 
 
@@ -300,12 +306,14 @@ module.exports = function(app) {
         });*/
 
     router.get('/categoria', function(req, res) {
-        Categoria.find({}, function(err, objResult) {
-            if (err) res.sendStatus(404);
-            res.render('categoria', {
-                objResult: objResult
-            })
-        })
+        if (sesion) {
+            Categoria.find({}, function(err, objResult) {
+                if (err) return res.sendStatus(404);
+                return res.render('categoria', {
+                    objResult: objResult
+                });
+            });
+        } else return res.redirect('login')
     });
 
     router.post('/categoria', function(req, res) {
@@ -330,7 +338,10 @@ module.exports = function(app) {
 
     router.get('/categoria/crear', function(req, res) {
 
-        res.render('crearcategoria');
+        if (sesion) {
+            return res.render('crearcategoria');
+        } else
+            return res.redirect('login');
     });
 
     /*router.get('/categoria/editar', function(req, res) {
@@ -386,17 +397,6 @@ module.exports = function(app) {
             });
         });
     });
-
-    router.get('/categoria/listar', function(req, res) {
-        /*Categoria.find({}, function(err, objResult) {
-            if (err) return res.sendStatus(404);
-            res.render('listarcategoria', {
-                objResult: objResult
-            })
-        })*/
-        res.render('listarcategoria');
-    });
-
 
     app.use(router);
 }
