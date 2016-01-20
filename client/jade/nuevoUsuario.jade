@@ -1,28 +1,102 @@
 doctype html
 html
   head
-    title REGISTRAR USUARIO
+    title Test
     meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel="stylesheet" type="text/css" href="../css/semantic.min.css")
+    style.
+      body {
+        background-color: #DADADA;
+      }
+      body > .grid {
+        height: 100%;
+      }
+      .image {
+        margin-top: -100px;
+      }
+      .column {
+        max-width: 450px;
+      }
+    script(src="../js/semantic.min.js")
   body
-    h1 NUEVO USUARIO
-    form(action='/nuevoUsuario' method='post')
-      label Nombre: 
-      input(type='text', name='nombre')
-      br
-      label Usuario: 
-      input(type='text', name='usuario')
-      br
-      label Contraseña: 
-      input(type='password', name='password')
-      br
-      label Ingrese otra vez su contraseña
-      br
-      label Contraseña: 
-      input(type='password', name='password1')
-      br
-      input(type='submit', value='Crear')
-    if message!=undefined
-      label #{message}
-      br
-    a.btn-cancelar(href='/login')
-      button.btn-cancelar(type='button') Login
+    .ui.middle.aligned.center.aligned.grid
+      .column
+        h2.ui.teal.image.header
+          img.image(src='../css/logo.png')
+          .content Nuevo Usuario
+        form.ui.large.form.error(action='/nuevoUsuario' method='post')
+          .ui.stacked.segment
+            .field.error
+              .ui.left.icon.input
+                i.bullseye.icon
+                input(type='text', name='nombre', placeholder='nombre')
+            .field.error
+              .ui.left.icon.input
+                i.bullseye.icon
+                input(type='text', name='usuario', placeholder='usuario')
+            .field.error
+              .ui.left.icon.input
+                i.bullseye.icon
+                input(type='password', name='password', placeholder='password')
+            .field.error
+              .ui.left.icon.input
+                i.bullseye.icon
+                input(type='password', name='password1', placeholder='Confirme su password')
+            input.ui.fluid.large.teal.submit.button(type='submit', value='Crear')
+            if message!=undefined
+              label #{message}
+            br
+            a.ui.fluid.large.teal.submit.button(href='/login') Cancelar
+         //     button.ui.fluid.large.teal.submit.button Cancelar
+         //   a.btn-cancelar(href='/login')
+                
+ //     button.btn-cancelar(type='button') Login
+
+//doctype html
+//html
+  head
+    title Test
+    meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel="stylesheet" type="text/css" href="../css/semantic.min.css")
+    style.
+      body {
+        background-color: #DADADA;
+      }
+      body > .grid {
+        height: 100%;
+      }
+      .image {
+        margin-top: -100px;
+      }
+      .column {
+        max-width: 450px;
+      }
+    script(src="../js/semantic.min.js")
+  body
+    div.ui.middle.aligned.center.aligned.grid
+      div.column
+        h2.ui.teal.image.header
+          img.image(src='../css/logo.png')
+          div.content Nuevo Usuario:
+        form.ui.large.form.error(action='/auth/login', method='post')
+          div.ui.stacked.segment
+            div.field.error
+              div.ui.left.icon.input
+                i.user.icon
+                input(type='text', name='form_usuario', placeholder='usuario')
+            div.field.error
+              div.ui.left.icon.input
+                i.lock.icon
+                input(type='password', name='form_password', placeholder='password')
+            .field.error
+              .ui.left.icon.input
+            input.ui.fluid.large.teal.submit.button(type='submit', value='Entrar')
+            if message!=undefined
+              label #{message}
+          div.ui.error.message
+        div.ui.message Nuevo usuario? 
+          a(href='/nuevoUsuario') Crear

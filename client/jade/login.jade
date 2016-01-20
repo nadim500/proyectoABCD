@@ -3,23 +3,52 @@ html
   head
     title Test
     meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel="stylesheet" type="text/css" href="../css/semantic.min.css")
+    style.
+      body {
+        background-color: #DADADA;
+      }
+      body > .grid {
+        height: 100%;
+      }
+      .image {
+        margin-top: -100px;
+      }
+      .column {
+        max-width: 450px;
+      }
+    script(src="../js/semantic.min.js")
   body
-    form(action='/auth/login', method='post')
-      label Usuario:
-      br
-      input(type='text', name='form_usuario')
-      br
-      label Contraseña:
-      br
-      input.login-screen(type='password', name='form_password')
-      br
-      input(type='submit', value='Entrar')
-      br
-    if message!=undefined
-      label #{message}
-      br
-      br
-    label Nuevo usuario, cree su cuenta :
-    br
-    a.btn-crear(href='/nuevoUsuario')
-      button.btn-crear(type='button') Crear
+    div.ui.middle.aligned.center.aligned.grid
+      div.column
+        h2.ui.teal.image.header
+          img.image(src='../css/logo.png')
+          div.content Ingrese a su cuenta:
+        form.ui.large.form.error(action='/auth/login', method='post')
+          div.ui.stacked.segment
+            div.field.error
+              div.ui.left.icon.input
+                i.user.icon
+                input(type='text', name='form_usuario', placeholder='usuario')
+            div.field.error
+              div.ui.left.icon.input
+                i.lock.icon
+                input(type='password', name='form_password', placeholder='password')
+            input.ui.fluid.large.teal.submit.button(type='submit', value='Entrar')
+            if message!=undefined
+              label #{message}
+          div.ui.error.message
+        div.ui.message Nuevo usuario? 
+          a(href='/nuevoUsuario') Crear
+
+
+ 
+
+//              label Nuevo usuario, cree su cuenta :
+//              a.btn-crear(href='/nuevoUsuario')
+//                button.btn-crear(type='button') Crear
+//                input(type='password', name='password', placeholder='Password')
+//            .ui.fluid.large.teal.submit.button Login
+//          a(href='#') Sign Up
