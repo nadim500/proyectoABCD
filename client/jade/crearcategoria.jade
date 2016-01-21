@@ -1,19 +1,64 @@
 doctype html
-head
-  title Crear Categoria
-  meta(charset='UTF-8')
-body
-  a(href='/producto') Productos
-  a(href='/categoria') Categorias
-  if message != undefined
-    p #{message}
-  form(action="/categoria" method="post")
-    label Nombre: 
-    input(type="text", name='nombre')
-    br
-    label Descripcion: 
-    textarea(name='descripcion', rows='10', cols='30')
-    input(type="submit" value="guardar")
-  br
-  a.btn-cancelar(href='/categoria')
-    button.btn-cancelar(type='botton') Cancelar
+html
+  head
+    title Crear Categoria
+    meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
+  body
+
+    .ui.large.top.menu
+      .ui.container
+        a.item(href='/producto') Productos
+        a.item(href='/categoria') Categorias
+      .rigth.menu
+        .item
+          .ui.icon.input
+            input(type='text' placeholder='search...')
+            i.search.icon
+        .item
+          a.ui.black.button Salir
+
+        //Formulario
+
+    .ui.container
+      .ui.form
+        if message != undefined
+          p #{message}
+        form(action='/categoria' method='post')
+          .field
+            .fields
+              .ten.wide.fields
+                h3.ui.dividing.header Recopilando informacion
+
+          .field
+            label Nombre
+            .fields
+              .six.wide.field
+                input(type='text' name='nombre' placeholder='Nombre')
+
+          .field
+            label Descripcion
+              .fields
+                .six.wide.field
+                  textarea(name='descripcion')
+
+          input.ui.black.button(type='submit' value='Crear')
+          a.ui.black.button(href='/categoria') Cancelar
+
+
+//    a(href='/producto') Productos
+//    a(href='/categoria') Categorias
+//    if message != undefined
+//      p #{message}
+//    form(action="/categoria" method="post")
+//      label Nombre: 
+//      input(type="text", name='nombre')
+//      br
+//      label Descripcion: 
+//      textarea(name='descripcion', rows='10', cols='30')
+//      input(type="submit" value="guardar")
+//    br
+//    a.btn-cancelar(href='/categoria')
+//      button.btn-cancelar(type='botton') Cancelar

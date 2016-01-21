@@ -1,26 +1,75 @@
 doctype html
-head
-  title Editar Categoria
-  meta(charset='UTF-8')
-body
-  a(href='/producto') Productos
-  a(href='/categoria') Categorias
-  form(action='/editarCategoria' method='post')
-    each categoria in objResult_categoria
-      label Nombre: 
-      input(type='text' name='nuevoNombre' placeholder='#{categoria.nombre}')
-      br
-      label Descripcion:
-      textarea(name='nuevaDescripcion' rows='10', cols='30' placeholder=categoria.descripcion)
-      br
-      label Id: 
-      select(name='categoriaId')
-        option(value=categoria.id) #{categoria.id}
-      br
-    input(type='submit' value='Guardar Cambios')
-  form(action='/eliminar/categoria' method='post')
-    each categoria in objResult_categoria
-      input(type='hidden' name='idCategoria' value=categoria.id)
-      input(type='submit' value='Eliminar')
-  a.btn-cancelar(href='/categoria')
-    button.btn-cancelar(style='button') Cancelar
+html
+  head
+    title Editar Categoria
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
+  body
+
+    //Menu
+    .ui.large.top.menu
+      .ui.container
+        a.item(href='/producto') Productos
+        a.item(href='/categoria') Categorias
+      .menu
+        .item
+          .ui.icon.input
+            input(type='text' placeholder='search...')
+            i.search.icon
+        .item
+          a.ui.black.button Salir
+
+    //Formulario
+
+    .ui.container
+      .ui.form
+        form(action='/editarCategoria' method='post')
+          each categoria in objResult_categoria
+            .field
+              .fields
+                .ten.wide.fields
+                  h3.ui.dividing.header Editando informacion
+
+            .field
+              label Nombre
+              .fields
+                .six.wide.field
+                  input(type='text' name='nuevoNombre' value='#{categoria.nombre}')
+
+            .field
+              label Descripcion
+              .fields
+                .six.wide.field
+                  textarea(name='nuevaDescripcion' value='#{categoria.descripcion}')
+
+            input(type='hidden' name='categoriaId' value=categoria.id)   
+          input.ui.black.button(type='submit' value='Guardar Cambios')
+          a.ui.black.button(href='/categoria') Cancelar
+        form(action='/eliminar/categoria' method='post')
+          each categoria in objResult_categoria
+            input(type='hidden' name='idCategoria' value=categoria.id)
+            input.ui.black.button(type='submit' value='Eliminar')
+
+
+  //  a(href='/producto') Productos
+  //  a(href='/categoria') Categorias
+  //  form(action='/editarCategoria' method='post')
+  //    each categoria in objResult_categoria
+  //      label Nombre: 
+  //      input(type='text' name='nuevoNombre' placeholder='#{categoria.nombre}')
+  //      br
+  //      label Descripcion:
+  //      textarea(name='nuevaDescripcion' rows='10', cols='30' placeholder=categoria.descripcion)
+  //      br
+  //      label Id: 
+  //      select(name='categoriaId')
+  //        option(value=categoria.id) #{categoria.id}
+  //      br
+  //    input(type='submit' value='Guardar Cambios')
+  //  form(action='/eliminar/categoria' method='post')
+  //    each categoria in objResult_categoria
+  //      input(type='hidden' name='idCategoria' value=categoria.id)
+  //      input(type='submit' value='Eliminar')
+  //  a.btn-cancelar(href='/categoria')
+  //    button.btn-cancelar(style='button') Cancelar

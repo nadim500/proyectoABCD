@@ -3,38 +3,125 @@ html
   head
     title Editar Produto
     meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
   body
-    a(href='/producto') Productos
-    a(href='/categoria') Categorias
-    br
-    form(action='/editarproducto' method='post')
-      each producto in objResult_producto
-        label Nombre: 
-        input(type='text' name='nuevoNombre' placeholder='#{producto.nombre}')
-        br
-        label Categoria:
-        select(name='idCategoria')
-          each categoria in objResult_categoria
-            option(value=categoria.id) #{categoria.nombre}
-        br
-        label Id: 
-        select(name='idProducto')
-          option(value=producto.id) #{producto.id}
-        br
-        label Precio: 
-        input(type='text' name='nuevoPrecio' placeholder='#{producto.precio}')
-        br
-        label Cantidad: 
-        input(type='text' name='nuevoCantidad' placeholder='#{producto.cantidad}')
-        br
-        label Descripcion: 
-        textarea(name='nuevoDescripcion' rows='10', cols='30' placeholder='#{producto.descripcion}')
-        br
-      input(type='submit' value='Guardar cambios')
-    br
-    form(action='/producto/eliminar' method='post')
-      each producto in objResult_producto
-        input(type='hidden' name='idProducto' value=producto.id)
-        input(type='submit' value='Eliminar')
-    a.btn-cancelar(href='/producto')
-      button.btn-cancelar(type='button') Cancelar
+
+    //Menu
+    .ui.large.top.menu
+      .ui.container
+        a.item(href='/producto') Productos
+        a.item(href='/categoria') Categorias
+      .menu
+        .item
+          .ui.icon.input
+            input(type='text' placeholder='search...')
+            i.search.icon
+        .item
+          a.ui.black.button Salir
+
+    //Formulario
+
+    .ui.container
+      .ui.form
+        form(action='/editarproducto' method='post')
+          each producto in objResult_producto
+            .field
+              .fields
+                .ten.wide.fields
+                  h3.ui.dividing.header Editando informacion
+
+            .field
+              label Nombre
+              .fields
+                .six.wide.field
+                  input(type='text' name='nuevoNombre' value='#{producto.nombre}')
+
+            .field
+              label Categoria
+                .fields
+                  .three.wide.fields
+                    select.ui.search.dropdown(name='idCategoria')
+                      each categoria in objResult_categoria
+                        option(value=categoria.id) #{categoria.nombre}
+                    //i.dropdown.icon
+
+            .field
+              label Precio
+              .fields
+                .six.wide.field
+                  input(type='text' name='nuevoPrecio' value='#{producto.precio}')
+
+            .field
+              label Cantidad
+              .fields
+                .six.wide.field
+                  input(type='text' name='nuevoCantidad' value='#{producto.cantidad}')
+
+            .field
+              label Descripcion
+              .fields
+                .six.wide.field
+                  textarea(name='nuevoDescripcion' value='producto.descripcion')
+
+            input(type='hidden' name='idProducto' value=producto.id)
+            a.ui.black.button(href='/producto') Cancelar
+          input.ui.black.button(type='submit' value='Guardar cambios')
+
+        form(action='/producto/eliminar' method='post')
+          each producto in objResult_producto
+            input(type='hidden' name='idProducto' value=producto.id)
+            input.ui.black.button(type='submit' value='Eliminar')
+
+ //       a.ui.black.button(href='/producto') Cancelar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    a(href='/producto') Productos
+//    a(href='/categoria') Categorias
+//    br
+//    form(action='/editarproducto' method='post')
+//      each producto in objResult_producto
+//        label Nombre: 
+//        input(type='text' name='nuevoNombre' placeholder='#{producto.nombre}')
+//        br
+//        label Categoria:
+//        select(name='idCategoria')
+//          each categoria in objResult_categoria
+//            option(value=categoria.id) #{categoria.nombre}
+//        br
+//        label Id: 
+//        select(name='idProducto')
+//          option(value=producto.id) #{producto.id}
+//        br
+//        label Precio: 
+//        input(type='text' name='nuevoPrecio' placeholder='#{producto.precio}')
+//        br
+//        label Cantidad: 
+//        input(type='text' name='nuevoCantidad' placeholder='#{producto.cantidad}')
+//        br
+//        label Descripcion: 
+//        textarea(name='nuevoDescripcion' rows='10', cols='30' placeholder='#{producto.descripcion}')
+//        br
+//      input(type='submit' value='Guardar cambios')
+//    br
+//    form(action='/producto/eliminar' method='post')
+//      each producto in objResult_producto
+//        input(type='hidden' name='idProducto' value=producto.id)
+//        input(type='submit' value='Eliminar')
+//    a.btn-cancelar(href='/producto')
+//      button.btn-cancelar(type='button') Cancelar

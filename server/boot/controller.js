@@ -8,6 +8,10 @@ module.exports = function(app) {
     var Usuario = app.models.Usuario;
     var sesion = false;
 
+    router.get('/homepage',function(req,res){
+        res.render('homepage');
+    })
+
     router.get('/nuevoUsuario', function(req, res) {
         console.log("********");
         return res.render('nuevoUsuario');

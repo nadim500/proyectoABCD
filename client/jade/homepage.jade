@@ -1,17 +1,17 @@
 doctype html
 html
   head
-    title Menu Principal
+    title HomePage
     meta(charset='UTF-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
-    link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
-  body
-    //MENU
-    .ui.large.menu.top
+    link(rel="stylesheet" type="text/css" href="../css/semantic.min.css")
+  body.pushable
+    //Menu
+    .ui.large.top.menu
       .ui.container
-        a.item(href='/producto') Productos
-        a.item(href='/categoria') Categorias
+        a.item Productos
+        a.item Categorias
       .rigth.menu
         .item
           .ui.icon.input
@@ -19,3 +19,10 @@ html
             i.search.icon
         .item
           a.ui.black.button Salir
+    //Contenido de pagina
+    
+    .ui.vertical.middle.masthead.center.aligned.segment
+      //.ui.text.container
+      h1 Bienvenido
+      .ui.huge.primary.button Empezar
+        i.right.arrow.icon

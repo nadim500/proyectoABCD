@@ -1,27 +1,72 @@
 doctype html
-head
-  title Menu Categoria
-  meta(charset='UTF-8')
-body
-  a(href='/producto') Productos
-  a(href='/categoria') Categorias
-  br
-  form(action='/categoria/editar' method='post')
-    table(style='width:60%')
-      tr
-        th Id
-        th Nombre
-        th Descripcion
-      each categoria in objResult
-        tr
-          th
-            input(type='radio' name='idCategoria' value=categoria.id)
-            | #{categoria.id}
-          th
-            a(href='/producto?idCategoria='+categoria.id) #{categoria.nombre}
-          th #{categoria.descripcion}
-    br
-    input(type='submit' value='Editar')
-  a.btn-crear(href='/categoria/crear')
-    button.btn-crear(type='button') Crear
-  br
+html
+  head
+    title Menu Categoria
+    meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")  
+    link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
+  body
+
+    //MENU
+    .ui.large.menu
+      .ui.container
+        a.item(href='/producto') Productos
+        a.item(href='/categoria') Categorias
+      .menu
+        .item
+          .ui.icon.input
+            input(type='text' placeholder='search...')
+            i.search.icon
+        .item
+          a.ui.black.button Salir
+
+    //Cuerpo
+    .ui.container
+      form(action='/categoria/editar' method='post')
+        table.ui.fixed.table
+          thead
+            tr
+              th.ui.center.aligned Id
+              th.ui.center.aligned Nombre
+              th.ui.center.aligned Descripcion
+          tbody
+            each categoria in objResult
+              tr.ui.form
+                .inline.fields
+                  th.ui.center.aligned 
+                    .field
+                      .ui.radio.checkbox
+                        input(type='radio' name='idCategoria' value=categoria.id)
+                        label #{categoria.id}
+                  th.ui.center.aligned #{categoria.nombre}
+                  th.ui.center.aligned #{categoria.descripcion}
+        a.ui.black.button(href='/categoria/crear') Crear
+        input.ui.black.button(type='submit' value='Editar')
+
+
+
+
+  //  a(href='/producto') Productos
+  //  a(href='/categoria') Categorias
+  //  br
+  //  form(action='/categoria/editar' method='post')
+  //    table(style='width:60%')
+  //      tr
+  //        th Id
+  //        th Nombre
+  //        th Descripcion
+  //      each categoria in objResult
+  //        tr
+  //          th
+  //            input(type='radio' name='idCategoria' value=categoria.id)
+  //            | #{categoria.id}
+  //          th
+  //            a(href='/producto?idCategoria='+categoria.id) #{categoria.//nombre}//
+  //          th #{cate//goria.descripcion}//
+  //    br//
+  //    in//put(type='submit' value='Editar')//
+  //  a.btn-crear(href='/categoria/crear')//
+  //    button.btn-crear(type='button') Crear
+  //  br
+  
