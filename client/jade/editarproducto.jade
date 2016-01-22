@@ -63,7 +63,7 @@ html
               label Descripcion
               .fields
                 .six.wide.field
-                  textarea(name='nuevoDescripcion' value='producto.descripcion')
+                  textarea(name='nuevoDescripcion' value=producto.descripcion placeholder=producto.descripcion)
 
             input(type='hidden' name='idProducto' value=producto.id)
             a.ui.black.button(href='/producto') Cancelar

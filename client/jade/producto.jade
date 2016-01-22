@@ -6,7 +6,10 @@ html
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")  
     link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+    script(src="../js/semantic.min.js")
   body
+    -var i=1
     .ui.large.top.menu
       .ui.container        
         a.item(href='/producto') Productos
@@ -27,10 +30,11 @@ html
               th.ui.center.aligned Nombre
               th.ui.center.aligned Precio
               th.ui.center.aligned Stock
-              th.ui.center.aligned Descripcion
-              th.ui.center.aligned Categoria
+            //  th.ui.center.aligned Descripcion
+            //  th.ui.center.aligned Categoria
           tbody
             each producto in objResult_producto
+
               tr.ui.form
                 .inline.fields
                   th.ui.center.aligned 
@@ -38,17 +42,114 @@ html
                       .ui.radio.checkbox
                         input(type='radio' name='idProducto' value=producto.id)
                         label #{producto.id}
-                  th.ui.center.aligned #{producto.nombre}
+
+
+                  th.ui.center.aligned
+                    // MODO FUNCION
+                    // -label(onClick="show('" + producto.nombre + "')" ) #{producto.nombre}
+                    -console.log('---->***',producto.categorias.nombre)
+                    //- label.label_show(attr_nombre=producto.nombre, attr_descripcion=producto.descripcion, attr_precio=producto.precio, attr_cantidad=producto.cantidad, attr_id=producto.id, attr_categoria=producto.categorias.nombre) #{producto.nombre}
+                    label.label_show(attr_obj=JSON.stringify(producto)) #{producto.nombre}
+                    -i=i+1
+
+
                   th.ui.center.aligned #{producto.precio}
                   th.ui.center.aligned #{producto.cantidad}
-                  th.ui.center.aligned #{producto.descripcion}
-                  //-each categoria in objResult_categoria
-                    if producto.categoriaId == categoria.id
-                      th #{categoria.nombre}
-                  th.ui.center.aligned #{producto.categorias.nombre}
-        a.ui.black.button(href='/producto/crear') Crear
-        input.ui.black.button(type='submit' value='Editar')
+                //  th.ui.center.aligned #{producto.descripcion}
+                //  //-each categoria in objResult_categoria
+                //    if producto.categoriaId == categoria.id
+                //      th #{categoria.nombre}
+                //  th.ui.center.aligned #{producto.categorias.nombre}
+        
 
+        a.ui.black.button(href='/producto/crear') Crear
+        //.ui.teal.button(data-title='WP' data-content='GG') Clickea
+        input.ui.black.button(type='submit' value='Editar')
+        //button.ui.button#botonModal Modal
+
+      // template
+      div.ui.modal
+        div.header Informacion
+        div.content
+          h4 Id
+          #producto_id
+          h4 Nombre
+          #producto_nombre
+          h4 Precio
+          #producto_precio
+          h4 Cantidad
+          #producto_cantidad
+          h4 Descripcion
+          #producto_descripcion
+          h4 Categoria
+          #producto_categoria
+        //p Id: #{producto.id}
+        //p Nombre: #{producto.nombre}
+        //p Precio: #{producto.precio}
+        //p Cantidad: #{producto.cantidad}
+        //p Descripcion: #{producto.descripcion}
+
+  // HARCODEO EN MODAL 
+    - console.log(i) 
+    - var code = "<script>", keyId = "";
+    - for(var j = 1; j <= objResult_producto.length; j++ ) {
+    -   keyId = "'#modal-" + j + "'";
+    -   code += "$(" + keyId + ").click(function(e) {e.preventDefault(); $('.ui.modal').modal('show'); });"
+    -}
+    - code += "</script>"
+    !=code
+  script.
+    // METODO CORRECTO
+    $(".label_show").on("click", function(event) {
+      var attr_obj = $(this).attr("attr_obj");
+      attr_obj = JSON.parse( attr_obj );
+
+      var attr_nombre = attr_obj.nombre;
+      var attr_id = attr_obj.id;
+      var attr_precio = attr_obj.precio;
+      var attr_cantidad = attr_obj.cantidad;
+      var attr_descripcion = attr_obj.descripcion;
+      var attr_categoria = attr_obj.categorias.nombre;
+
+      $('#producto_id').text(attr_id);
+      $('#producto_nombre').text(attr_nombre);
+      $('#producto_precio').text(attr_precio);
+      $('#producto_cantidad').text(attr_cantidad);
+      $('#producto_descripcion').text(attr_descripcion);
+      $('#producto_categoria').text(attr_categoria)
+      $('.ui.modal').modal('show');
+    });
+
+    // function show(id) {
+    //   console.log("->", id);
+    //   $('#producto_nombre ').text(id);
+    //   $('.ui.modal').modal('show');
+    // }
+
+  //script.
+  //  $('.ui.container .ui.teal.button')
+  //    .popup({
+  //      inline   : true,
+  //      hoverable: true,
+  //      position : 'bottom left',
+  //      delay: {
+  //        show: 0,
+  //        hide: 0
+  //      }
+  //    })
+  //  ;
+  //script.
+  //  $('.ss')
+  //    .popup({
+  //      inline   : true,
+  //      hoverable: true,
+  //      position : 'bottom left',
+  //      delay: {
+  //        show: 300,
+  //        hide: 800
+  //      }
+  //    })
+  //  ;
   //  br
   //  form(action='/producto/editar' method='post')
   //    table(style='width:60%')

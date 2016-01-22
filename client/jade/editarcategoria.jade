@@ -41,7 +41,7 @@ html
               label Descripcion
               .fields
                 .six.wide.field
-                  textarea(name='nuevaDescripcion' value='#{categoria.descripcion}')
+                  textarea(name='nuevaDescripcion' value='#{categoria.descripcion}' placeholder=categoria.descripcion)
 
             input(type='hidden' name='categoriaId' value=categoria.id)   
           input.ui.black.button(type='submit' value='Guardar Cambios')

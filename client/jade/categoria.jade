@@ -39,7 +39,8 @@ html
                       .ui.radio.checkbox
                         input(type='radio' name='idCategoria' value=categoria.id)
                         label #{categoria.id}
-                  th.ui.center.aligned #{categoria.nombre}
+                  th.ui.center.aligned
+                    a(href='/producto?idCategoria='+categoria.id) #{categoria.nombre}
                   th.ui.center.aligned #{categoria.descripcion}
         a.ui.black.button(href='/categoria/crear') Crear
         input.ui.black.button(type='submit' value='Editar')
