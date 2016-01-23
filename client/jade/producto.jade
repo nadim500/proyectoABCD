@@ -8,6 +8,11 @@ html
     link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
     script(src="../js/semantic.min.js")
+    style.
+      .item_tr:hover {
+        background: #A1CCEC;
+      }
+    
   body
     -var i=1
     .ui.large.top.menu
@@ -35,10 +40,13 @@ html
           tbody
             each producto in objResult_producto
 
-              tr.ui.form
+              tr.ui.form.item_tr
                 .inline.fields
                   th.ui.center.aligned 
                     .field
+                    
+                      i.write.icon
+                      i.trash.icon
                       .ui.radio.checkbox
                         input(type='radio' name='idProducto' value=producto.id)
                         label #{producto.id}

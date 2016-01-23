@@ -10,7 +10,7 @@ html
     link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
     style.
       .item_tr:hover {
-        background: #F9FAFB;
+        background: #A1CCEC;
       }
   body
 
@@ -38,10 +38,16 @@ html
               th.ui.center.aligned Descripcion
           tbody
             each categoria in objResult
-              tr.item_tr.ui.form.table_show(attr_obj=JSON.stringify(categoria))
+              tr.item_tr.ui.form
                 .inline.fields
                   th.ui.center.aligned 
                     .field
+                    
+                      //button.ui.icon.button
+                      
+                      i.write.icon#icono_write
+                      i.trash.icon#icono_trash
+                    
                       .ui.radio.checkbox
                         input(type='radio' name='idCategoria' value=categoria.id)
                         label #{categoria.id}
@@ -52,12 +58,12 @@ html
 
 
                   th.ui.center.aligned
-                    label #{categoria.descripcion}
+                    label.table_show(attr_obj=JSON.stringify(categoria)) #{categoria.descripcion}
 
 
 
 
-
+        a.ui.black.button#boton_probando Probando
         a.ui.black.button(href='/categoria/crear') Crear
         input.ui.black.button(type='submit' value='Editar')
 
@@ -70,6 +76,14 @@ html
           #categoria_nombre
           h4 Descripcion
           #categoria_descripcion
+          
+  script.
+    $("#boton_probando").on("click",function(){
+      $("#icono_write").show();
+      $("#icono_trash").show();
+      });
+  
+          
   script.
     $(".table_show").on("click",function(event){
       var attr_obj=$(this).attr("attr_obj");
