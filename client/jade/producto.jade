@@ -45,8 +45,8 @@ html
                   th.ui.center.aligned 
                     .field
                     
-                      i.write.icon
-                      i.trash.icon
+                      i.write.icon.icono_write(style="visibility:hidden")
+                      i.trash.icon.icono_trash(style="visibility:hidden")
                       .ui.radio.checkbox
                         input(type='radio' name='idProducto' value=producto.id)
                         label #{producto.id}
@@ -69,7 +69,8 @@ html
                 //      th #{categoria.nombre}
                 //  th.ui.center.aligned #{producto.categorias.nombre}
         
-
+        
+        a.ui.black.button#boton_probando Probando
         a.ui.black.button(href='/producto/crear') Crear
         //.ui.teal.button(data-title='WP' data-content='GG') Clickea
         input.ui.black.button(type='submit' value='Editar')
@@ -106,6 +107,14 @@ html
     -}
     - code += "</script>"
     !=code
+    
+  script.
+    $("#boton_probando").on("click",function(){
+      $(".icono_write").attr("style","visibility:visible");
+      $(".icono_trash").attr("style","visibility:visible");
+    });
+    
+    
   script.
     // METODO CORRECTO
     $(".label_show").on("click", function(event) {

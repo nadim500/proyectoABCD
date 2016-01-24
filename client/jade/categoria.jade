@@ -45,8 +45,8 @@ html
                     
                       //button.ui.icon.button
                       
-                      i.write.icon#icono_write
-                      i.trash.icon#icono_trash
+                      i.write.icon.icono_write(style="visibility:hidden")
+                      i.trash.icon.icono_trash(style="visibility:hidden")
                     
                       .ui.radio.checkbox
                         input(type='radio' name='idCategoria' value=categoria.id)
@@ -79,8 +79,8 @@ html
           
   script.
     $("#boton_probando").on("click",function(){
-      $("#icono_write").show();
-      $("#icono_trash").show();
+      $(".icono_write").attr("style","visibility:visible");
+      $(".icono_trash").attr("style","visibility:visible");
       });
   
           
