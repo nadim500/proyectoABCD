@@ -5,6 +5,8 @@ html
     meta(charset='UTF-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+    script(src="../js/semantic.min.js")
     link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
   body
 
@@ -24,71 +26,93 @@ html
     //Formulario
 
     .ui.container
-      .ui.form
-        form(action='/editarproducto' method='post')
-          each producto in objResult_producto
-            .field
+      //.ui.form
+      form.ui.form.ss(action='/editarproducto' method='post')
+        each producto in objResult_producto
+          .field
+            .fields
+              .ten.wide.fields
+                h3.ui.dividing.header Editando informacion
+
+          .field
+            label Nombre
+            .fields
+              .six.wide.field
+                input(type='text' name='nuevoNombre' value='#{producto.nombre}')
+
+          .field
+            label Categoria
               .fields
-                .ten.wide.fields
-                  h3.ui.dividing.header Editando informacion
+                .three.wide.fields
+                  select.ui.search.dropdown(name='idCategoria')
+                    each categoria in objResult_categoria
+                      option(value=categoria.id) #{categoria.nombre}
+                  //i.dropdown.icon
 
-            .field
-              label Nombre
-              .fields
-                .six.wide.field
-                  input(type='text' name='nuevoNombre' value='#{producto.nombre}')
+          .field
+            label Precio
+            .fields
+              .six.wide.field
+                input(type='text' name='nuevoPrecio' value='#{producto.precio}')
 
-            .field
-              label Categoria
-                .fields
-                  .three.wide.fields
-                    select.ui.search.dropdown(name='idCategoria')
-                      each categoria in objResult_categoria
-                        option(value=categoria.id) #{categoria.nombre}
-                    //i.dropdown.icon
+          .field
+            label Cantidad
+            .fields
+              .six.wide.field
+                input(type='text' name='nuevoCantidad' value='#{producto.cantidad}')
 
-            .field
-              label Precio
-              .fields
-                .six.wide.field
-                  input(type='text' name='nuevoPrecio' value='#{producto.precio}')
+          .field
+            label Descripcion
+            .fields
+              .six.wide.field
+                textarea(name='nuevoDescripcion' value=producto.descripcion placeholder=producto.descripcion)
 
-            .field
-              label Cantidad
-              .fields
-                .six.wide.field
-                  input(type='text' name='nuevoCantidad' value='#{producto.cantidad}')
+          input(type='hidden' name='idProducto' value=producto.id)
+        a.ui.black.button(href='/producto') Cancelar
+        input.ui.black.button(type='submit' value='Guardar cambios')
 
-            .field
-              label Descripcion
-              .fields
-                .six.wide.field
-                  textarea(name='nuevoDescripcion' value=producto.descripcion placeholder=producto.descripcion)
+      form(action='/producto/eliminar' method='post')
+        each producto in objResult_producto
+          input(type='hidden' name='idProducto' value=producto.id)
+          input.ui.black.button(type='submit' value='Eliminar')
 
-            input(type='hidden' name='idProducto' value=producto.id)
-            a.ui.black.button(href='/producto') Cancelar
-          input.ui.black.button(type='submit' value='Guardar cambios')
-
-        form(action='/producto/eliminar' method='post')
-          each producto in objResult_producto
-            input(type='hidden' name='idProducto' value=producto.id)
-            input.ui.black.button(type='submit' value='Eliminar')
-
+  script.
+    $(".form.ss")
+      .form({
+        inline:true,
+        on:'blur',
+        fields:{
+          nombre:{
+            identifier:'nuevoNombre',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese un nombre'
+            }]
+          },
+          precio:{
+            identifier:'nuevoPrecio',
+            rules:[{
+              type:'decimal',
+              prompt:'Ingrese un numero decimal(ejemplo: 40.50 )'
+            }]
+          },
+          cantidad:{
+            identifier:'nuevoCantidad',
+            rules:[{
+              type:'integer',
+              prompt:'Ingrese un numero entero(ejemplo:2,5,8,...)'
+            }]
+          },
+          descripcion:{
+            identifier:'nuevoDescripcion',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese una descripcion'
+            }]
+          }
+        }
+      });
  //       a.ui.black.button(href='/producto') Cancelar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //    a(href='/producto') Productos

@@ -5,6 +5,8 @@ html
     meta(charset='UTF-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+    script(src="../js/semantic.min.js")
     link(rel="stylesheet" type="text/css" href="../css/semantic.min.css")
     style.
       body {
@@ -19,29 +21,51 @@ html
       .column {
         max-width: 450px;
       }
-    script(src="../js/semantic.min.js")
   body
     div.ui.middle.aligned.center.aligned.grid
       div.column
         h2.ui.teal.image.header
           img.image(src='../css/logo.png')
           div.content Ingrese a su cuenta:
-        form.ui.large.form.error(action='/auth/login', method='post')
+        form.ui.large.form(action='/auth/login', method='post')
           div.ui.stacked.segment
-            div.field.error
+            div.field
               div.ui.left.icon.input
                 i.user.icon
                 input(type='text', name='form_usuario', placeholder='usuario')
-            div.field.error
+            div.field
               div.ui.left.icon.input
                 i.lock.icon
                 input(type='password', name='form_password', placeholder='password')
             input.ui.fluid.large.teal.submit.button(type='submit', value='Entrar')
+            .ui.error.message
             if message!=undefined
               label #{message}
-          div.ui.error.message
         div.ui.message Nuevo usuario? 
           a(href='/nuevoUsuario') Crear
+
+  script.
+    $('.form')
+      .form({
+        on:'blur',
+        fields:{
+          usuario:{
+            identifier:'form_usuario',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese un usuario'
+            }]
+          },
+          contrasela:{
+            identifier:'form_password',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese su contraseña'
+            }]
+          }
+        }
+      });
+
 
 
  

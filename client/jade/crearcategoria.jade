@@ -5,6 +5,8 @@ html
     meta(charset='UTF-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+    script(src="../js/semantic.min.js")
     link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
   body
 
@@ -23,29 +25,57 @@ html
         //Formulario
 
     .ui.container
-      .ui.form
-        if message != undefined
-          p #{message}
-        form(action='/categoria' method='post')
-          .field
-            .fields
-              .ten.wide.fields
-                h3.ui.dividing.header Recopilando informacion
+      //.ui.form
+      if message != undefined
+        p #{message}
+      form.ui.form(action='/categoria' method='post')
+        .field
+          .fields
+            .ten.wide.fields
+              h3.ui.dividing.header Recopilando informacion
 
-          .field
-            label Nombre
+        .field
+          label Nombre
+          .fields
+            .six.wide.field
+              input(type='text' name='nombre' placeholder='Nombre')
+
+        .field
+          label Descripcion
             .fields
               .six.wide.field
-                input(type='text' name='nombre' placeholder='Nombre')
+                textarea(name='descripcion')
+        a.ui.black.button(href='/categoria') Cancelar
+        input.ui.black.button(type='submit' value='Crear')
 
-          .field
-            label Descripcion
-              .fields
-                .six.wide.field
-                  textarea(name='descripcion')
+  
 
-          input.ui.black.button(type='submit' value='Crear')
-          a.ui.black.button(href='/categoria') Cancelar
+
+  
+  script.
+    $(".form")
+      .form({
+        inline:true,
+        on:'blur',
+        fields:{
+          nombre:{
+            identifier:'nombre',
+            rules: [
+            {
+              type:'empty',
+              prompt:'Ingrese un nombre'
+            }]
+          },
+          descripcion:{
+            identifier:'descripcion',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese una descripcion'
+            }]
+          }
+        }
+      });
+          
 
 
 //    a(href='/producto') Productos

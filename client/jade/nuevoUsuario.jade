@@ -5,6 +5,7 @@ html
     meta(charset='UTF-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
     link(rel="stylesheet" type="text/css" href="../css/semantic.min.css")
     style.
       body {
@@ -26,29 +27,69 @@ html
         h2.ui.teal.image.header
           img.image(src='../css/logo.png')
           .content Nuevo Usuario
-        form.ui.large.form.error(action='/nuevoUsuario' method='post')
+        form.ui.large.form(action='/nuevoUsuario' method='post')
           .ui.stacked.segment
-            .field.error
+            .field
               .ui.left.icon.input
                 i.bullseye.icon
-                input(type='text', name='nombre', placeholder='nombre')
-            .field.error
+                input(type='text', name='email', placeholder='email')
+            .field
               .ui.left.icon.input
                 i.bullseye.icon
                 input(type='text', name='usuario', placeholder='usuario')
-            .field.error
+            .field
               .ui.left.icon.input
                 i.bullseye.icon
-                input(type='password', name='password', placeholder='password')
-            .field.error
+                input(type='password', name='password', placeholder='contraseña')
+            .field
               .ui.left.icon.input
                 i.bullseye.icon
-                input(type='password', name='password1', placeholder='Confirme su password')
-            input.ui.fluid.large.teal.submit.button(type='submit', value='Crear')
+                input(type='password', name='password1', placeholder='Confirme su contraseña')
             if message!=undefined
               label #{message}
+            .ui.error.message
+            input.ui.fluid.large.teal.submit.button(type='submit', value='Crear')
             br
             a.ui.fluid.large.teal.submit.button(href='/login') Cancelar
+
+  script.
+    $(".form")
+      .form({
+        on:'blur',
+        fields:{
+          email:{
+            identifier:'email',
+            rules:[{
+              type:'email',
+              prompt:'Porfavor ingrese un email valido'
+            }]
+          },
+          usuario:{
+            identifier:'usuario',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese un usuario'
+            }]
+          },
+          password:{
+            identifier:'password',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese una contraseña'
+            }]
+          },
+          password1:{
+            identifier:'password1',
+            rules:[{
+              type:'match[password]',
+              prompt:'Las contraseñas no concuerdan'
+            }]
+          }
+        }
+      });
+
+
+
          //     button.ui.fluid.large.teal.submit.button Cancelar
          //   a.btn-cancelar(href='/login')
                 

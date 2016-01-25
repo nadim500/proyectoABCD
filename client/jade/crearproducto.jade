@@ -5,6 +5,8 @@ html
     meta(charset='UTF-8')
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+    script(src="../js/semantic.min.js")
     link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
   body
     .ui.large.top.menu
@@ -22,30 +24,30 @@ html
     //Formulario
 
     .ui.container
-      .ui.form
-        if message != undefined
-          p #{message}
-        form(action='/producto' method='post')
-          .field
-            .fields
-              .ten.wide.fields
-                h3.ui.dividing.header Recopilando informacion
+      //.ui.form
+      if message != undefined
+        p #{message}
+      form.ui.form(action='/producto' method='post')
+        .field
+          .fields
+            .ten.wide.fields
+              h3.ui.dividing.header Recopilando informacion
 
-          .field
-            label Nombre
-            .fields
-              .six.wide.field
-                input(type='text' name='nombre' placeholder='Nombre')
+        .field
+          label Nombre
+          .fields
+            .six.wide.field
+              input(type='text' name='nombre' placeholder='Nombre')
 
-          .field
-            label Categoria
-            .fields
-              .three.wide.fields                
-                select.ui.search.dropdown(name='categoriaId')
-                  each categoria in objResult_categoria
-                    option(value=categoria.id) #{categoria.nombre}
-                  i.dropdown.icon
-                  .defaul.text Categoria
+        .field
+          label Categoria
+          .fields
+            .three.wide.fields                
+              select.ui.search.dropdown(name='categoriaId')
+                each categoria in objResult_categoria
+                  option(value=categoria.id) #{categoria.nombre}
+                i.dropdown.icon
+                .defaul.text Categoria
                 //aqui viene una parte para que se coloree la seleccion, buscade nuevo
                 //input.search(autocomplete='off' tabindex='0')
                 //.default.text Categoria
@@ -53,26 +55,62 @@ html
                 //  each categoria in objResult_categoria
                 //    .item.selected(data-value=categoria.id) #{categoria.nombre}
 
-          .field
-            label Precio
+        .field
+          label Precio
+          .fields
+            .six.wide.field
+              input(type='text' name='precio' placeholder='Precio')
+
+        .field
+          label Cantidad
+          .fields
+            .six.wide.field
+              input(type='text' name='cantidad' placeholder='Cantidad')
+
+        .field
+          label Descripcion
             .fields
               .six.wide.field
-                input(type='text' name='precio' placeholder='Precio')
+                textarea(name='descripcion' placeholder='Descripcion')
+        a.ui.black.button(href='/producto') Cancelar
+        input.ui.black.button(type='submit' value='Crear')
 
-          .field
-            label Cantidad
-            .fields
-              .six.wide.field
-                input(type='text' name='cantidad' placeholder='Cantidad')
-
-          .field
-            label Descripcion
-              .fields
-                .six.wide.field
-                  textarea(name='descripcion' placeholder='Descripcion')
-          input.ui.black.button(type='submit' value='Crear')
-          a.ui.black.button(href='/producto') Cancelar
-
+  script.
+    $(".form")
+      .form({
+        inline:true,
+        on:'blur',
+        fields:{
+          nombre:{
+            identifier:'nombre',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese un nombre'
+            }]
+          },
+          precio:{
+            identifier:'precio',
+            rules:[{
+              type:'decimal',
+              prompt:'Ingrese un numero decimal(ejemplo: 40.50 )'
+            }]
+          },
+          cantidad:{
+            identifier:'cantidad',
+            rules:[{
+              type:'integer',
+              prompt:'Ingrese un numero entero(ejemplo:2,5,8,...)'
+            }]
+          },
+          descripcion:{
+            identifier:'descripcion',
+            rules:[{
+              type:'empty',
+              prompt:'Ingrese una descripcion'
+            }]
+          }
+        }
+      });
 
   
   
