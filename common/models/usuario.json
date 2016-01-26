@@ -10,7 +10,7 @@
       "type": "number",
       "required": false
     },
-    "nombre": {
+    "email": {
       "type": "string",
       "required": false
     },

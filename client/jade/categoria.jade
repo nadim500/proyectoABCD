@@ -25,7 +25,7 @@ html
             input(type='text' placeholder='search...')
             i.search.icon
         .item
-          a.ui.black.button Salir
+          a.ui.black.button(href='/salir') Salir
 
     //Cuerpo
     .ui.container
@@ -43,10 +43,11 @@ html
                   th.ui.center.aligned 
                     .field
                     
-                      //button.ui.icon.button
-                      
-                      i.write.icon.icono_write(style="visibility:hidden")
-                      i.trash.icon.icono_trash(style="visibility:hidden")
+                        //button.ui.icon.button
+                      a(href='/login')
+                        i.write.icon.icono_write(style="visibility:hidden")
+                      a
+                        i.trash.icon.icono_trash(style="visibility:hidden")
                     
                       .ui.radio.checkbox
                         input(type='radio' name='idCategoria' value=categoria.id)

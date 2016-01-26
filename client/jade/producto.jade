@@ -25,7 +25,7 @@ html
             input(type='text' placeholder='search..')
             i.search.icon
         .item
-          a.ui.black.button Salir
+          a.ui.black.button(href='/salir') Salir
     .ui.container
       form(action='/producto/editar' method='post')
         table.ui.fixed.table
@@ -45,8 +45,11 @@ html
                   th.ui.center.aligned 
                     .field
                     
-                      i.write.icon.icono_write(style="visibility:hidden")
-                      i.trash.icon.icono_trash(style="visibility:hidden")
+                      a(href="/producto/editar?id=" + producto.id)
+                        i.write.icon.icono_write(attr_id=producto.id style="visibility:hidden")
+
+                      a(href="/producto/eliminar?id="+producto.id)
+                        i.trash.icon.icono_trash(style="visibility:hidden")
                       .ui.radio.checkbox
                         input(type='radio' name='idProducto' value=producto.id)
                         label #{producto.id}
@@ -108,6 +111,12 @@ html
     - code += "</script>"
     !=code
     
+  //- script.
+  //-   $(".write.icon").on("click",function(event){
+  //-     var idProducto = $(this).attr('attr_id');
+  //-     $.post('/producto/editar',{idProducto:idProducto});
+  //-   })
+
   script.
     $("#boton_probando").on("click",function(){
       $(".icono_write").attr("style","visibility:visible");

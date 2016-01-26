@@ -8,9 +8,117 @@ module.exports = function(app) {
     var Usuario = app.models.Usuario;
     var sesion = false;
 
-    router.get('/homepage',function(req,res){
+    // TODO: validar sesion con middleware
+    // app.use(function(req, res, next) {
+    //     if(!sesion) return res.sendStatus(500);
+
+    //     console.log("->", req.url.indexOf("/login"));
+    //     next();
+    // });
+
+    /////////////////USUARIO////////////////
+
+    var usuario_por_defecto={
+        email:'root@root.com',
+        username:'root',
+        password:'root'
+    };
+    Usuario.create(usuario_por_defecto,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+
+    /////////////////CATEGORIAS/////////////
+
+    var categoria1={
+        nombre:'mueble',
+        descripcion:'cosas para el hogar'
+    };
+    Categoria.create(categoria1,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+    ///////////////////////////////////////////
+    var categoria2={
+        nombre:'juegos',
+        descripcion:'para diversion'
+    };
+    Categoria.create(categoria2,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+    ///////////////////////////////////////////
+    var categoria3={
+        nombre:'frutas',
+        descripcion:'alimentos naturales'
+    };
+    Categoria.create(categoria3,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+    ///////////////////////////////////////////
+    var categoria4={
+        nombre:'proteinas',
+        descripcion:'para el desarrollo muscular'
+    };
+    Categoria.create(categoria4,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+
+    ///////////PRODUCTOS///////////////////////
+
+    var producto1={
+        nombre:'sillon',
+        precio:'50.00',
+        cantidad:'5',
+        descripcion:'sirve para descanzar',
+        categoriaId:'1'
+    };
+    Producto.create(producto1,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+    ///////////////////////////////////////////
+    var producto2={
+        nombre:'dota2',
+        precio:'100.00',
+        cantidad:'2',
+        descripcion:'Millones lo juegan',
+        categoriaId:'2'
+    };
+    Producto.create(producto2,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+    ///////////////////////////////////////////
+    var producto3={
+        nombre:'platano',
+        precio:'0.50',
+        cantidad:'100',
+        descripcion:'Rica en potasio',
+        categoriaId:'3'
+    };
+    Producto.create(producto3,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+    ///////////////////////////////////////////
+    var producto4={
+        nombre:'Whey Protein',
+        precio:'200.00',
+        cantidad:'1',
+        descripcion:'gran regeneracion muscular',
+        categoriaId:'4'
+    };
+    Producto.create(producto4,function(err,obj){
+        if(err) return res.sendStatus(404);
+        console.log(obj);
+    });
+
+    router.get('/homepage', function(req,res){
         res.render('homepage');
-    })
+    });
 
     router.get('/nuevoUsuario', function(req, res) {
         console.log("********");
@@ -19,7 +127,7 @@ module.exports = function(app) {
 
     router.post('/nuevoUsuario', function(req, res) {
         var nuevoUsuario = {
-            nombre: req.body.nombre,
+            email: req.body.nombre,
             username: req.body.usuario,
             password: req.body.password
         }
@@ -30,9 +138,7 @@ module.exports = function(app) {
         if (password == password1) {
             Usuario.create(nuevoUsuario, function(err, objResult) {
                 if (err) return res.sendStatus(404);
-                return res.render('nuevoUsuario', {
-                    message: "usuario creado con exito"
-                })
+                return res.render('login')
             });
         } else {
 
@@ -59,6 +165,8 @@ module.exports = function(app) {
         //}
         var user = req.body.form_usuario;
         var contr = req.body.form_password;
+        console.log("****",user);
+        console.log("****",contr);
         Usuario.find({
             where: {
                 username: user,
@@ -88,9 +196,13 @@ module.exports = function(app) {
     });
 
     router.get('/login', function(req, res) {
-        res.render('login');
+        return res.render('login');
     });
 
+    router.get('/salir',function(req,res){
+        sesion=false;
+        res.redirect('login');
+    })
 
     router.get('/producto/crear', function(req, res) {
         if (sesion) {
@@ -104,13 +216,7 @@ module.exports = function(app) {
     });
 
     router.get('/producto/editar', function(req, res) {
-
-        if (sesion) return res.render('editarproducto');
-        else return res.redirect('login');
-    });
-
-    router.post('/producto/editar', function(req, res) {
-        var idProducto = req.body.idProducto;
+        var idProducto = req.query.id;
 
         Categoria.find({}, function(err, objResult_categoria) {
             Producto.find({
@@ -118,6 +224,7 @@ module.exports = function(app) {
                     id: idProducto
                 }
             }, function(err, objResult_producto) {
+                console.log("________-----_____",objResult_producto);
                 if (err) return res.sendStatus(404);
                 return res.render('editarproducto', {
                     objResult_producto: objResult_producto,
@@ -126,7 +233,30 @@ module.exports = function(app) {
             });
         });
 
+        // if (sesion) return res.render('editarproducto');
+        // else return res.redirect('login');
     });
+
+    /*router.post('/producto/editar', function(req, res) {
+        var idProducto = req.body.idProducto;
+        console.log("--->",idProducto);
+
+        Categoria.find({}, function(err, objResult_categoria) {
+            Producto.find({
+                where: {
+                    id: idProducto
+                }
+            }, function(err, objResult_producto) {
+                console.log("________-----_____",objResult_producto)
+                if (err) return res.sendStatus(404);
+                return res.render('editarproducto', {
+                    objResult_producto: objResult_producto,
+                    objResult_categoria: objResult_categoria
+                });
+            });
+        });
+
+    });*/
 
     router.post('/editarproducto', function(req, res) {
         var idProducto = req.body.idProducto;
@@ -253,8 +383,16 @@ module.exports = function(app) {
             }
             //console.log(nuevoProducto);
 
+        Producto.create(nuevoProducto,function(err,obj){
+            Producto.find({},function(err,objResult_producto){
+                if(err) return res.sendStatus(404);
+                return res.render('producto',{
+                    objResult_producto:objResult_producto
+                });
+            });
+        });
 
-        Categoria.find({}, function(err, objResult_categoria) {
+        /*Categoria.find({}, function(err, objResult_categoria) {
             Producto.create(nuevoProducto, function(err, obj) {
                 if (err) res.render('crearproducto', {
                     message: "error producido",
@@ -265,7 +403,28 @@ module.exports = function(app) {
                     objResult_categoria: objResult_categoria
                 });
             });
+        });*/
+    });
+
+    router.get('/producto/eliminar',function(req,res){
+        var idProducto=req.query.id;
+        console.log(idProducto);
+        Producto.destroyById(idProducto, function(err) {
+            if (err) return res.sendStatus(404)
         });
+
+        Producto.find({
+            include: ['categorias']
+        }, function(err, objResult_producto) {
+            if (err) return res.sendStatus(404);
+            objResult_producto = objResult_producto.map(function(obj) {
+                return obj.toJSON();
+            });
+            res.render('producto', {
+                objResult_producto: objResult_producto
+            })
+        });
+
     });
 
     router.post('/producto/eliminar', function(req, res) {
@@ -327,7 +486,16 @@ module.exports = function(app) {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion
         }
-        Categoria.create(nuevaCategoria, function(err, obj) {
+
+        Categoria.create(nuevaCategoria,function(err,obj){
+            Categoria.find({},function(err,objResult){
+                if(err) return res.sendStatus(404);
+                return res.render('categoria',{
+                    objResult:objResult
+                });
+            });
+        });
+        /*Categoria.create(nuevaCategoria, function(err, obj) {
             if (err) {
                 debug("err", err);
                 res.render('crearcategoria', {
@@ -337,7 +505,7 @@ module.exports = function(app) {
             res.render('crearcategoria', {
                 message: "objeto guardado con exito"
             });
-        });
+        });*/
     });
 
     router.get('/categoria/crear', function(req, res) {
