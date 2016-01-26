@@ -57,11 +57,11 @@ html
                   .two.fields
                     .field
                       a(href="/producto/editar?id=" + producto.id)
-                        i.write.icon.icono_write(attr_id=producto.id style="visibility:hidden")
+                        i.write.icon.icono_write(attr_id=producto.id)
 
                       //- a(href="/producto/eliminar?id="+producto.id)
                         //.eliminar_icono(attr_id=producto.id)
-                      i.trash.icon.icono_trash(style="visibility:hidden" attr_id=producto.id)
+                      i.trash.icon.icono_trash(attr_id=producto.id)
 
                     .six.wide.fields.left.floated
                       .fields
@@ -216,9 +216,11 @@ html
   //-   })
 
   script.
+    $(".icono_write").hide();
+    $(".icono_trash").hide();
     $("#boton_probando").on("click",function(){
-      $(".icono_write").attr("style","visibility:visible");
-      $(".icono_trash").attr("style","visibility:visible");
+      $(".icono_write").toggle();
+      $(".icono_trash").toggle();
     });
     
     
