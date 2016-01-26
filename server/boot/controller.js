@@ -412,9 +412,25 @@ module.exports = function(app) {
         var idProducto = req.query.id;
         console.log(idProducto);
         Producto.destroyById(idProducto, function(err) {
-            if (err) return res.sendStatus(404)
+            // if (err) {
+            //  return res.json({
+            //     success: false, 
+            //     id: null
+            //  })
+            // }
+            // return res.json({
+            //     success: true,
+            //     id: idProducto
+            // });
+
+            if(err) {
+                return res.sendStatus(500);
+            } else {
+                return res.sendStatus(200);
+            }
         });
 
+    /*            
         Producto.find({
             include: ['categorias']
         }, function(err, objResult_producto) {
@@ -422,10 +438,13 @@ module.exports = function(app) {
             objResult_producto = objResult_producto.map(function(obj) {
                 return obj.toJSON();
             });
+
+
             res.render('producto', {
                 objResult_producto: objResult_producto
             })
         });
+            */
 
     });
 
