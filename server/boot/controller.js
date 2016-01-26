@@ -18,105 +18,105 @@ module.exports = function(app) {
 
     /////////////////USUARIO////////////////
 
-    var usuario_por_defecto={
-        email:'root@root.com',
-        username:'root',
-        password:'root'
+    var usuario_por_defecto = {
+        email: 'root@root.com',
+        username: 'root',
+        password: 'root'
     };
-    Usuario.create(usuario_por_defecto,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Usuario.create(usuario_por_defecto, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
 
     /////////////////CATEGORIAS/////////////
 
-    var categoria1={
-        nombre:'mueble',
-        descripcion:'cosas para el hogar'
+    var categoria1 = {
+        nombre: 'mueble',
+        descripcion: 'cosas para el hogar'
     };
-    Categoria.create(categoria1,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Categoria.create(categoria1, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
     ///////////////////////////////////////////
-    var categoria2={
-        nombre:'juegos',
-        descripcion:'para diversion'
+    var categoria2 = {
+        nombre: 'juegos',
+        descripcion: 'para diversion'
     };
-    Categoria.create(categoria2,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Categoria.create(categoria2, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
     ///////////////////////////////////////////
-    var categoria3={
-        nombre:'frutas',
-        descripcion:'alimentos naturales'
+    var categoria3 = {
+        nombre: 'frutas',
+        descripcion: 'alimentos naturales'
     };
-    Categoria.create(categoria3,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Categoria.create(categoria3, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
     ///////////////////////////////////////////
-    var categoria4={
-        nombre:'proteinas',
-        descripcion:'para el desarrollo muscular'
+    var categoria4 = {
+        nombre: 'proteinas',
+        descripcion: 'para el desarrollo muscular'
     };
-    Categoria.create(categoria4,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Categoria.create(categoria4, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
 
     ///////////PRODUCTOS///////////////////////
 
-    var producto1={
-        nombre:'sillon',
-        precio:'50.00',
-        cantidad:'5',
-        descripcion:'sirve para descanzar',
-        categoriaId:'1'
+    var producto1 = {
+        nombre: 'sillon',
+        precio: '50.00',
+        cantidad: '5',
+        descripcion: 'sirve para descanzar',
+        categoriaId: '1'
     };
-    Producto.create(producto1,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Producto.create(producto1, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
     ///////////////////////////////////////////
-    var producto2={
-        nombre:'dota2',
-        precio:'100.00',
-        cantidad:'2',
-        descripcion:'Millones lo juegan',
-        categoriaId:'2'
+    var producto2 = {
+        nombre: 'dota2',
+        precio: '100.00',
+        cantidad: '2',
+        descripcion: 'Millones lo juegan',
+        categoriaId: '2'
     };
-    Producto.create(producto2,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Producto.create(producto2, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
     ///////////////////////////////////////////
-    var producto3={
-        nombre:'platano',
-        precio:'0.50',
-        cantidad:'100',
-        descripcion:'Rica en potasio',
-        categoriaId:'3'
+    var producto3 = {
+        nombre: 'platano',
+        precio: '0.50',
+        cantidad: '100',
+        descripcion: 'Rica en potasio',
+        categoriaId: '3'
     };
-    Producto.create(producto3,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Producto.create(producto3, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
     ///////////////////////////////////////////
-    var producto4={
-        nombre:'Whey Protein',
-        precio:'200.00',
-        cantidad:'1',
-        descripcion:'gran regeneracion muscular',
-        categoriaId:'4'
+    var producto4 = {
+        nombre: 'Whey Protein',
+        precio: '200.00',
+        cantidad: '1',
+        descripcion: 'gran regeneracion muscular',
+        categoriaId: '4'
     };
-    Producto.create(producto4,function(err,obj){
-        if(err) return res.sendStatus(404);
+    Producto.create(producto4, function(err, obj) {
+        if (err) return res.sendStatus(404);
         console.log(obj);
     });
 
-    router.get('/homepage', function(req,res){
+    router.get('/homepage', function(req, res) {
         res.render('homepage');
     });
 
@@ -165,8 +165,8 @@ module.exports = function(app) {
         //}
         var user = req.body.form_usuario;
         var contr = req.body.form_password;
-        console.log("****",user);
-        console.log("****",contr);
+        console.log("****", user);
+        console.log("****", contr);
         Usuario.find({
             where: {
                 username: user,
@@ -199,8 +199,8 @@ module.exports = function(app) {
         return res.render('login');
     });
 
-    router.get('/salir',function(req,res){
-        sesion=false;
+    router.get('/salir', function(req, res) {
+        sesion = false;
         res.redirect('login');
     })
 
@@ -224,7 +224,7 @@ module.exports = function(app) {
                     id: idProducto
                 }
             }, function(err, objResult_producto) {
-                console.log("________-----_____",objResult_producto);
+                console.log("________-----_____", objResult_producto);
                 if (err) return res.sendStatus(404);
                 return res.render('editarproducto', {
                     objResult_producto: objResult_producto,
@@ -236,6 +236,8 @@ module.exports = function(app) {
         // if (sesion) return res.render('editarproducto');
         // else return res.redirect('login');
     });
+
+    //--------------Comentando la funcion del boton editar en producto.jade
 
     /*router.post('/producto/editar', function(req, res) {
         var idProducto = req.body.idProducto;
@@ -383,11 +385,11 @@ module.exports = function(app) {
             }
             //console.log(nuevoProducto);
 
-        Producto.create(nuevoProducto,function(err,obj){
-            Producto.find({},function(err,objResult_producto){
-                if(err) return res.sendStatus(404);
-                return res.render('producto',{
-                    objResult_producto:objResult_producto
+        Producto.create(nuevoProducto, function(err, obj) {
+            Producto.find({}, function(err, objResult_producto) {
+                if (err) return res.sendStatus(404);
+                return res.render('producto', {
+                    objResult_producto: objResult_producto
                 });
             });
         });
@@ -406,8 +408,8 @@ module.exports = function(app) {
         });*/
     });
 
-    router.get('/producto/eliminar',function(req,res){
-        var idProducto=req.query.id;
+    router.get('/producto/eliminar', function(req, res) {
+        var idProducto = req.query.id;
         console.log(idProducto);
         Producto.destroyById(idProducto, function(err) {
             if (err) return res.sendStatus(404)
@@ -427,7 +429,9 @@ module.exports = function(app) {
 
     });
 
-    router.post('/producto/eliminar', function(req, res) {
+    //----------Quitando funcion del boton eliminar en editarproducto
+
+    /*router.post('/producto/eliminar', function(req, res) {
         var idProducto = req.body.idProducto;
         Producto.destroyById(idProducto, function(err) {
             if (err) return res.sendStatus(404)
@@ -454,9 +458,7 @@ module.exports = function(app) {
         //        });
         //    });
         //});
-
-
-    });
+    });*/
 
 
     /*Producto.create(nuevoProducto,function(err,obj){
@@ -487,11 +489,11 @@ module.exports = function(app) {
             descripcion: req.body.descripcion
         }
 
-        Categoria.create(nuevaCategoria,function(err,obj){
-            Categoria.find({},function(err,objResult){
-                if(err) return res.sendStatus(404);
-                return res.render('categoria',{
-                    objResult:objResult
+        Categoria.create(nuevaCategoria, function(err, obj) {
+            Categoria.find({}, function(err, objResult) {
+                if (err) return res.sendStatus(404);
+                return res.render('categoria', {
+                    objResult: objResult
                 });
             });
         });
@@ -516,10 +518,77 @@ module.exports = function(app) {
             return res.redirect('login');
     });
 
-    /*router.get('/categoria/editar', function(req, res) {
-        console.log("esta no");
-        res.render('editarcategoria');
+    router.get('/categoria/eliminar', function(req, res) {
+        var idCategoria = req.query.id;
+
+        Producto.destroyAll({
+            categoriaId: idCategoria
+        }, function(err, info) {
+            console.log("err:", err);
+            console.log("info:", info);
+
+            if (err) return res.sendStatus(404);
+            // console.log("se elimino", info);
+
+            Categoria.destroyById(idCategoria, function(err) {
+                if (err) return res.sendStatus(404);
+
+                Categoria.find({}, function(err, objResult) {
+                    if (err) return res.sendStatus(404);
+                    else return res.render('categoria', {
+                        objResult: objResult
+                    });
+                });
+            });
+        });
+
+
+        // Producto.find({},function(err,obj){
+        //     for each (var producto in obj){
+        //         if(producto.categoriaId==idCategoria){
+        //             var idProducto = producto.id;
+        //             Producto.destroyById(idProducto,function(err){
+        //                 if(err) return res.sendStatus(404);
+        //             });
+        //         }
+        //     }
+        //     Producto.find({},function(err,obj){
+        //         console.log(obj);
+        //     })
+        // });
+
+
+    });
+
+    //------Quitando la funcion del bton eliminar de editarcategoria
+    /*router.post('/eliminar/categoria', function(req, res) {
+        var idCategoria = req.body.idCategoria;
+        Categoria.destroyById(idCategoria, function(err) {
+            if (err) return res.sendStatus(404);
+        })
+        Categoria.find({}, function(err, objResult) {
+            if (err) return res.sendStatus(404);
+            else return res.render('categoria', {
+                objResult: objResult
+            });
+        });
     });*/
+
+    router.get('/categoria/editar', function(req, res) {
+
+        var idCategoria = req.query.id;
+        Categoria.find({
+            where: {
+                id: idCategoria
+            }
+        }, function(err, objResult_categoria) {
+            if (err) return res.sendStatus(404);
+            return res.render('editarcategoria', {
+                objResult_categoria: objResult_categoria
+            });
+        });
+
+    });
 
     router.post('/categoria/editar', function(req, res) {
         //console.log("categoria editar");
@@ -557,18 +626,6 @@ module.exports = function(app) {
         });
     });
 
-    router.post('/eliminar/categoria', function(req, res) {
-        var idCategoria = req.body.idCategoria;
-        Categoria.destroyById(idCategoria, function(err) {
-            if (err) return res.sendStatus(404);
-        })
-        Categoria.find({}, function(err, objResult) {
-            if (err) return res.sendStatus(404);
-            else return res.render('categoria', {
-                objResult: objResult
-            });
-        });
-    });
 
     app.use(router);
 }

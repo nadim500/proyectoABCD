@@ -27,57 +27,58 @@ html
         .item
           a.ui.black.button(href='/salir') Salir
     .ui.container
-      form(action='/producto/editar' method='post')
-        table.ui.fixed.table
-          thead
-            tr
-              th.ui.center.aligned Id
-              th.ui.center.aligned Nombre
-              th.ui.center.aligned Precio
-              th.ui.center.aligned Stock
-            //  th.ui.center.aligned Descripcion
-            //  th.ui.center.aligned Categoria
-          tbody
-            each producto in objResult_producto
+      //---------QUITANDO EL FORMULARIO Y EL BOTON INPUT EDITAR
+      //form(action='/producto/editar' method='post')
+      table.ui.fixed.table
+        thead
+          tr
+            th.ui.center.aligned Id
+            th.ui.center.aligned Nombre
+            th.ui.center.aligned Precio
+            th.ui.center.aligned Stock
+          //  th.ui.center.aligned Descripcion
+          //  th.ui.center.aligned Categoria
+        tbody
+          each producto in objResult_producto
 
-              tr.ui.form.item_tr
-                .inline.fields
-                  th.ui.center.aligned 
-                    .field
+            tr.ui.form.item_tr
+              .inline.fields
+                th.ui.center.aligned 
+                  .field
                     
-                      a(href="/producto/editar?id=" + producto.id)
-                        i.write.icon.icono_write(attr_id=producto.id style="visibility:hidden")
+                    a(href="/producto/editar?id=" + producto.id)
+                      i.write.icon.icono_write(attr_id=producto.id style="visibility:hidden")
 
-                      a(href="/producto/eliminar?id="+producto.id)
-                        i.trash.icon.icono_trash(style="visibility:hidden")
-                      .ui.radio.checkbox
-                        input(type='radio' name='idProducto' value=producto.id)
-                        label #{producto.id}
-
-
-                  th.ui.center.aligned
-                    // MODO FUNCION
-                    // -label(onClick="show('" + producto.nombre + "')" ) #{producto.nombre}
-                    -console.log('---->***',producto.categorias.nombre)
-                    //- label.label_show(attr_nombre=producto.nombre, attr_descripcion=producto.descripcion, attr_precio=producto.precio, attr_cantidad=producto.cantidad, attr_id=producto.id, attr_categoria=producto.categorias.nombre) #{producto.nombre}
-                    label.label_show(attr_obj=JSON.stringify(producto)) #{producto.nombre}
-                    -i=i+1
+                    a(href="/producto/eliminar?id="+producto.id)
+                      i.trash.icon.icono_trash(style="visibility:hidden")
+                    .ui.radio.checkbox
+                      input(type='radio' name='idProducto' value=producto.id)
+                      label #{producto.id}
 
 
-                  th.ui.center.aligned #{producto.precio}
-                  th.ui.center.aligned #{producto.cantidad}
-                //  th.ui.center.aligned #{producto.descripcion}
-                //  //-each categoria in objResult_categoria
-                //    if producto.categoriaId == categoria.id
-                //      th #{categoria.nombre}
-                //  th.ui.center.aligned #{producto.categorias.nombre}
+                th.ui.center.aligned
+                  // MODO FUNCION
+                  // -label(onClick="show('" + producto.nombre + "')" ) #{producto.nombre}
+                  -console.log('---->***',producto.categorias.nombre)
+                  //- label.label_show(attr_nombre=producto.nombre, attr_descripcion=producto.descripcion, attr_precio=producto.precio, attr_cantidad=producto.cantidad, attr_id=producto.id, attr_categoria=producto.categorias.nombre) #{producto.nombre}
+                  label.label_show(attr_obj=JSON.stringify(producto)) #{producto.nombre}
+                  -i=i+1
+
+
+                th.ui.center.aligned #{producto.precio}
+                th.ui.center.aligned #{producto.cantidad}
+              //  th.ui.center.aligned #{producto.descripcion}
+              //  //-each categoria in objResult_categoria
+              //    if producto.categoriaId == categoria.id
+              //      th #{categoria.nombre}
+              //  th.ui.center.aligned #{producto.categorias.nombre}
         
         
-        a.ui.black.button#boton_probando Probando
-        a.ui.black.button(href='/producto/crear') Crear
-        //.ui.teal.button(data-title='WP' data-content='GG') Clickea
-        input.ui.black.button(type='submit' value='Editar')
-        //button.ui.button#botonModal Modal
+      a.ui.black.button#boton_probando Editar
+      a.ui.black.button(href='/producto/crear') Crear
+      //.ui.teal.button(data-title='WP' data-content='GG') Clickea
+      //input.ui.black.button(type='submit' value='Editar')
+      //button.ui.button#botonModal Modal
 
       // template
       div.ui.modal

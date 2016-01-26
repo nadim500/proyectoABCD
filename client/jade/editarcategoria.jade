@@ -49,8 +49,8 @@ html
         a.ui.black.button(href='/categoria') Cancelar
         input.ui.black.button(type='submit' value='Guardar Cambios')
 
-
-      form(action='/eliminar/categoria' method='post')
+      //--------Quitando el form y boton de eliminar
+      //form(action='/eliminar/categoria' method='post')
         each categoria in objResult_categoria
           input(type='hidden' name='idCategoria' value=categoria.id)
           input.ui.black.button(type='submit' value='Eliminar')

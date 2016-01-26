@@ -70,8 +70,8 @@ html
           input(type='hidden' name='idProducto' value=producto.id)
         a.ui.black.button(href='/producto') Cancelar
         input.ui.black.button(type='submit' value='Guardar cambios')
-
-      form(action='/producto/eliminar' method='post')
+      //-------Quitando form y boton eliminar    
+      //form(action='/producto/eliminar' method='post')
         each producto in objResult_producto
           input(type='hidden' name='idProducto' value=producto.id)
           input.ui.black.button(type='submit' value='Eliminar')
