@@ -550,14 +550,31 @@ module.exports = function(app) {
             // console.log("se elimino", info);
 
             Categoria.destroyById(idCategoria, function(err) {
-                if (err) return res.sendStatus(404);
 
-                Categoria.find({}, function(err, objResult) {
+                var cab="Categoria eliminada";
+                var mes="La categoria con id "+idCategoria+ " fue eliminado exitosamente";
+                return res.render('categoria',{
+                    cab:cab,
+                    mes:mes
+                })
+                /*if (err){
+                    return res.json({
+                        existe:false,
+                        id:null
+                    })
+                }else{
+                    return res.json({
+                        existe:true,
+                        id:idCategoria
+                    })
+                }*/
+                /*Categoria.find({}, function(err, objResult) {
                     if (err) return res.sendStatus(404);
                     else return res.render('categoria', {
-                        objResult: objResult
+                        objResult: objResult,
+                        message: message
                     });
-                });
+                });*/
             });
         });
 

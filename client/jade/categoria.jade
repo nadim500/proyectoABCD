@@ -33,6 +33,14 @@ html
 
     //Cuerpo
     .ui.container
+      .ui.positive.message#message_oculto
+        i.close.icon
+        .header
+          | #{cab}
+        p#message_parrafo
+          | #{mes}
+
+
       //----Quitando formulario y boton edita
       //form(action='/categoria/editar' method='post')
       table.ui.fixed.table
@@ -72,7 +80,7 @@ html
       a.ui.black.button(href='/categoria/crear') Crear
       //input.ui.black.button(type='submit' value='Editar')
 
-      div.ui.modal
+      div.ui.modal.principal
         div.header Informacion
         div.content
           h4 Id
@@ -91,7 +99,27 @@ html
           .ui.positive.right.labeled.icon.button Yes
             i.checkmark.icon
 
+  if !mes
+    script.
+      $("#message_oculto").hide();
+  else
+    script
+      $("#message_oculto").show();
   script.
+    //- $(document).ready(function() {
+      
+    //- });
+    //$("#message_oculto").hide();
+
+    //var message = !{JSON.stringify(message)};
+    //- if(message!=undefined){
+    //-   $(".ui.positive.message").show();
+    //- }
+
+
+
+  script.
+    var cab="",mes="";
     var idCategoriaDelete='';
     $('.icono_trash').on('click',function(){
       idCategoriaDelete=$(this).attr("attr_id");
@@ -99,11 +127,19 @@ html
         .modal({
           closable:false,
           onApprove:function(){
-            if(!!idCategoriaDelete){
-              $.get('/categoria/eliminar?id='+idCategoriaDelete,function(){
+            if(idCategoriaDelete){
+              $.get('/categoria/eliminar?id='+idCategoriaDelete,function(payload){
+                //- if(payload && payload.existe){
+                //-   cab="Categoria eliminada";
+                //-   mes="Categoria con id "+payload.id+" fue eliminado exitosamente";
+                //-   $("#message_header").text(cab);
+                //-   $("#message_parrafo").text(mes);
+                //-   $("#message_oculto").show();                  
+                //- }
 
               });
               location.reload();
+              
             }
           }
         })
@@ -134,7 +170,7 @@ html
       $('#categoria_id').text(attr_id);
       $('#categoria_nombre').text(attr_nombre);
       $('#categoria_descripcion').text(attr_descripcion);
-      $('.ui.modal').modal('show');
+      $('.ui.modal.principal').modal('show');
 
     });
 
