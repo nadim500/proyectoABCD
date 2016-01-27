@@ -423,12 +423,36 @@ module.exports = function(app) {
             //     id: idProducto
             // });
 
-            if(err) {
+            if (err) {
                 return res.sendStatus(500);
             } else {
                 return res.sendStatus(200);
             }
         });
+    });
+
+    router.post('/producto/eliminar', function(req, res) {
+        var idProducto = req.body.id;
+        Producto.destroyById(idProducto, function(err) {
+            if (err) return res.sendStatus(404);
+            var mostrarTitulo = "Producto eliminado";
+            var mostrarMensaje = "El producto con id " + idProducto + " fue eliminado exitosamente";
+            Producto.find({
+                include: ['categorias']
+            }, function(err, objResult_producto) {
+                if (err) return res.sendStatus(404);
+                objResult_producto = objResult_producto.map(function(obj) {
+                    return obj.toJSON();
+                });
+                return res.render('producto', {
+                    objResult_producto: objResult_producto,
+                    mostrarTitulo: mostrarTitulo,
+                    mostrarMensaje: mostrarMensaje
+                });
+            });
+        });
+
+    });
 
     /*            
         Producto.find({
@@ -446,7 +470,7 @@ module.exports = function(app) {
         });
             */
 
-    });
+
 
     //----------Quitando funcion del boton eliminar en editarproducto
 
@@ -537,8 +561,14 @@ module.exports = function(app) {
             return res.redirect('login');
     });
 
-    router.get('/categoria/eliminar', function(req, res) {
-        var idCategoria = req.query.id;
+    router.post('/categoria/eliminar', function(req, res) {
+        var idCategoria = req.body.id;
+
+        console.log('-->idCategoria', idCategoria);
+
+        if (!idCategoria) {
+            return res.redirect('categoria');
+        }
 
         Producto.destroyAll({
             categoriaId: idCategoria
@@ -550,13 +580,18 @@ module.exports = function(app) {
             // console.log("se elimino", info);
 
             Categoria.destroyById(idCategoria, function(err) {
+                var cab = "Categoria eliminada";
+                var mes = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
 
-                var cab="Categoria eliminada";
-                var mes="La categoria con id "+idCategoria+ " fue eliminado exitosamente";
-                return res.render('categoria',{
-                    cab:cab,
-                    mes:mes
-                })
+                Categoria.find({}, function(err, objResult) {
+                    if (err) return res.sendStatus(404);
+                    else return res.render('categoria', {
+                        objResult: objResult,
+                        cab: cab,
+                        mes: mes
+                    });
+                });
+
                 /*if (err){
                     return res.json({
                         existe:false,
@@ -597,7 +632,7 @@ module.exports = function(app) {
     });
 
     //------Quitando la funcion del bton eliminar de editarcategoria
-    /*router.post('/eliminar/categoria', function(req, res) {
+    /*    router.post('/eliminar/categoria', function(req, res) {
         var idCategoria = req.body.idCategoria;
         Categoria.destroyById(idCategoria, function(err) {
             if (err) return res.sendStatus(404);
@@ -657,7 +692,7 @@ module.exports = function(app) {
                 else return res.render('categoria', {
                     objResult: objResult
                 })
-            })
+            });
 
         });
     });

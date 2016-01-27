@@ -27,16 +27,16 @@ html
         h2.ui.teal.image.header
           img.image(src='../css/logo.png')
           div.content Ingrese a su cuenta:
-        form.ui.large.form(action='/auth/login', method='post')
+        form.ui.large.form(id="form_login" action='/auth/login', method='post')
           div.ui.stacked.segment
             div.field
               div.ui.left.icon.input
                 i.user.icon
-                input(type='text', name='form_usuario', placeholder='usuario')
+                input(type='text', name='form_usuario', placeholder='usuario', value="root")
             div.field
               div.ui.left.icon.input
                 i.lock.icon
-                input(type='password', name='form_password', placeholder='password')
+                input(type='password', name='form_password', placeholder='password', value="root")
             input.ui.fluid.large.teal.submit.button(type='submit', value='Entrar')
             .ui.error.message
             if message!=undefined
@@ -65,6 +65,8 @@ html
           }
         }
       });
+
+      $("#form_login").submit();
 
 
 

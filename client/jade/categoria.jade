@@ -33,12 +33,13 @@ html
 
     //Cuerpo
     .ui.container
-      .ui.positive.message#message_oculto
-        i.close.icon
-        .header
-          | #{cab}
-        p#message_parrafo
-          | #{mes}
+      if cab && mes
+        .ui.positive.message
+          i.close.icon
+          .header
+            | #{cab}
+          p
+            | #{mes}
 
 
       //----Quitando formulario y boton edita
@@ -73,9 +74,6 @@ html
                 th.ui.center.aligned
                   label.table_show(attr_obj=JSON.stringify(categoria)) #{categoria.descripcion}
 
-
-
-
       a.ui.black.button#boton_probando Editar
       a.ui.black.button(href='/categoria/crear') Crear
       //input.ui.black.button(type='submit' value='Editar')
@@ -90,7 +88,6 @@ html
           h4 Descripcion
           #categoria_descripcion
 
-
       .ui.small.modal
         .header Borrar Categoria
         .content ¿Esta seguro de eliminar esta categoria, tambien se eliminaran los productos que pertenezcan a esta categoria?
@@ -98,14 +95,21 @@ html
           .ui.negative.button No
           .ui.positive.right.labeled.icon.button Yes
             i.checkmark.icon
+        form(id="form_delete" action="/categoria/eliminar" method="POST")
+          input#input_id_delete(type="hidden", name="id")
+  //- script.
+    //- var obj=!{JSON.stringify(mostrar)}
+    //- console.log("-->", obj)
+    //- var cab
+    //- $('#message_oculto').hide();
+    //- if(obj){
+    //-   $("#message_oculto").show();
+    //-   $("#message_header").text();
+    //-   $("message_parrafo").text();
+    //- }
 
-  if !mes
-    script.
-      $("#message_oculto").hide();
-  else
-    script
-      $("#message_oculto").show();
-  script.
+
+  //- script.
     //- $(document).ready(function() {
       
     //- });
@@ -115,32 +119,41 @@ html
     //- if(message!=undefined){
     //-   $(".ui.positive.message").show();
     //- }
+  
+  script.
+    $(".positive.message .close")
+      .on("click",function(){
+        $(this)
+          .closest(".positive.message")
+          .transition("fade");
+      });
 
 
 
   script.
-    var cab="",mes="";
-    var idCategoriaDelete='';
+    //mes="";
+    //var idCategoriaDelete='';
     $('.icono_trash').on('click',function(){
-      idCategoriaDelete=$(this).attr("attr_id");
+      var   idCategoriaDelete=$(this).attr("attr_id");
       $('.ui.small.modal')
         .modal({
           closable:false,
           onApprove:function(){
-            if(idCategoriaDelete){
-              $.get('/categoria/eliminar?id='+idCategoriaDelete,function(payload){
-                //- if(payload && payload.existe){
-                //-   cab="Categoria eliminada";
-                //-   mes="Categoria con id "+payload.id+" fue eliminado exitosamente";
-                //-   $("#message_header").text(cab);
-                //-   $("#message_parrafo").text(mes);
-                //-   $("#message_oculto").show();                  
-                //- }
+            $("#input_id_delete").attr("value",idCategoriaDelete);
+            $("#form_delete").submit();
 
-              });
-              location.reload();
-              
-            }
+            //- if(idCategoriaDelete){
+            //-   $.get('/categoria/eliminar?id='+idCategoriaDelete,function(payload){
+            //-     if(payload && payload.existe){
+            //-       cab="Categoria eliminada";
+            //-       mes="Categoria con id "+payload.id+" fue eliminado exitosamente";
+            //-       $("#message_header").text(cab);
+            //-       $("#message_parrafo").text(mes);
+            //-       $("#message_oculto").show();                  
+            //-     }
+            //-   });
+            //-   location.reload();
+            //- }
           }
         })
         .modal('show');

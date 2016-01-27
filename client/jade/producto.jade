@@ -32,11 +32,14 @@ html
         .item
           a.ui.black.button(href='/salir') Salir
     .ui.container
-      //- #messageBox.ui.message
-      //-   .header#messageBox_message
-      //-     | Mensaje
-      //-   p#messageBox_title
-      //-     | Titulo
+      if mostrarMensaje && mostrarTitulo
+        .ui.positive.message
+          i.close.icon
+          .header
+            | #{mostrarTitulo}
+          p
+            | #{mostrarMensaje}
+      
       //---------QUITANDO EL FORMULARIO Y EL BOTON INPUT EDITAR
       //form(action='/producto/editar' method='post')
       table.ui.fixed.table
@@ -124,9 +127,18 @@ html
           .ui.negative.button No
           .ui.positive.right.labeled.icon.button Yes
             i.checkmark.icon
+        form#form_producto_delete(action="/producto/eliminar" method="post")
+          input#input_categoria_delete(name="id" type="hidden")
 
   script.
-    var idProductoDelete = "";
+    $(".positive.message .close")
+      .on("click",function(){
+        $(this)
+          .closest(".positive.message")
+          .transition("fade");
+      });
+
+  script.
 
     //- var objResult = !{JSON.stringify(objResult_producto)};
 
@@ -165,18 +177,21 @@ html
     //- });
 
     $(".icono_trash").on('click',function(){
-      idProductoDelete = $(this).attr("attr_id");
+      var idProductoDelete = $(this).attr("attr_id");
       $('.ui.small.modal')
       .modal({
         closable:false,
         onApprove: function() {
-          if(!!idProductoDelete) {
-            $.get("/producto/eliminar?id="+idProductoDelete, function(payload) {
+
+          $("#input_categoria_delete").attr("value",idProductoDelete);
+          $("#form_producto_delete").submit();
+          //- if(!!idProductoDelete) {
+          //-   $.get("/producto/eliminar?id="+idProductoDelete, function(payload) {
               //- var message = "", title = "";
 
               //- if(payload && payload.success) {
               //-   message = "Producto eliminado";
-              //-   title = "El producto " + payload.id + " fue eliminado exitosamente";
+              //-   title = "El producto_nombre " + payload.id + " fue eliminado exitosamente";
               //-   $("#messageBox").addClass("success");  
               //-   // deleteUser(payload.id)
               //-   // rebuildTable();
@@ -191,9 +206,9 @@ html
               //- $("#messageBox").show();  
 
               //- console.log("->", payload);
-            });
-            location.reload();
-          }
+          //-   });
+          //-   location.reload();
+          //- }
         } 
       })
       .modal('show');
