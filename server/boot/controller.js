@@ -208,9 +208,32 @@ module.exports = function(app) {
         if (sesion) {
             Categoria.find({}, function(err, objResult_categoria) {
                 if (err) return res.sendStatus(404)
-                return res.render('crearproducto', {
-                    objResult_categoria: objResult_categoria
-                });
+
+                else if (objResult_categoria.length == 0) {
+                    var mostrarTitulo = "Creacion de Producto";
+                    var mostrarMensaje = "No existe ninguna categoria, tal vez quiera crear una para poder crear un producto";
+                    var modo = false;
+                    Producto.find({
+                        include: ['categorias']
+                    }, function(err, objResult_producto) {
+                        if (err) return res.sendStatus(404);
+                        objResult_producto = objResult_producto.map(function(obj) {
+                            return obj.toJSON();
+                        });
+                        return res.render('producto', {
+                            objResult_producto: objResult_producto,
+                            mostrarTitulo: mostrarTitulo,
+                            mostrarMensaje: mostrarMensaje,
+                            modo: modo
+                        });
+                    });
+                } else {
+
+                    return res.render('crearproducto', {
+                        objResult_categoria: objResult_categoria
+                    });
+                }
+
             });
         } else return res.redirect('login');
     });
@@ -267,7 +290,7 @@ module.exports = function(app) {
         Producto.findById(idProducto, function(err, objResult) {
             if (err) return res.sendStatus(404);
             var exNombre = objResult.nombre;
-            modo=true;
+            modo = true;
             var mostrarTitulo = "Edicion de Producto"
             var mostrarMensaje = "El producto " + exNombre + " con id " + idProducto + " fue editado exitosamente";
             objResult.nombre = req.body.nuevoNombre;
@@ -288,20 +311,20 @@ module.exports = function(app) {
                     objResult_producto: objResult_producto,
                     mostrarTitulo: mostrarTitulo,
                     mostrarMensaje: mostrarMensaje,
-                    modo:modo
-                    //Categoria.find({}, function(err, objResult_categoria) {
-                    //    Producto.find({}, function(err, objResult_producto) {
-                    //        if (err) return res.sendStatus(404);
-                    //        return res.render('producto', {
-                    //            objResult_producto: objResult_producto,
-                    //            objResult_categoria: objResult_categoria
-                    //        })
-                    //    })
-                    //})
+                    modo: modo
                 });
             });
         });
     });
+    //Categoria.find({}, function(err, objResult_categoria) {
+    //    Producto.find({}, function(err, objResult_producto) {
+    //        if (err) return res.sendStatus(404);
+    //        return res.render('producto', {
+    //            objResult_producto: objResult_producto,
+    //            objResult_categoria: objResult_categoria
+    //        })
+    //    })
+    //})
 
     router.get('/producto', function(req, res) {
         if (sesion) {
@@ -401,7 +424,7 @@ module.exports = function(app) {
             console.log("wtffff!", objExiste);
             if (err) return res.sendStatus(404);
             else if (objExiste.length != 0) {
-                modo=false;
+                modo = false;
                 var mostrarTitulo = "Creacion de Producto";
                 var mostrarMensaje = "El producto ya existe";
                 Producto.find({}, function(err, objResult_producto) {
@@ -410,11 +433,11 @@ module.exports = function(app) {
                         objResult_producto: objResult_producto,
                         mostrarTitulo: mostrarTitulo,
                         mostrarMensaje: mostrarMensaje,
-                        modo:modo
+                        modo: modo
                     });
                 });
             } else {
-                modo=true;
+                modo = true;
                 var mostrarTitulo = "Creacion de Producto";
                 var mostrarMensaje = "El producto " + nuevoProducto.nombre + " se creo exitosamente";
                 Producto.create(nuevoProducto, function(err, obj) {
@@ -424,7 +447,7 @@ module.exports = function(app) {
                             objResult_producto: objResult_producto,
                             mostrarTitulo: mostrarTitulo,
                             mostrarMensaje: mostrarMensaje,
-                            modo:modo
+                            modo: modo
                         });
                     });
                 });
@@ -491,7 +514,7 @@ module.exports = function(app) {
                     objResult_producto: objResult_producto,
                     mostrarTitulo: mostrarTitulo,
                     mostrarMensaje: mostrarMensaje,
-                    modo:modo
+                    modo: modo
                 });
             });
         });
@@ -590,9 +613,9 @@ module.exports = function(app) {
                     if (err) return res.sendStatus(404);
                     return res.render('categoria', {
                         objResult: objResult,
-                        mostrarTitulo:mostrarTitulo,
-                        mostrarMensaje:mostrarMensaje,
-                        modo:modo
+                        mostrarTitulo: mostrarTitulo,
+                        mostrarMensaje: mostrarMensaje,
+                        modo: modo
                     });
                 });
             } else {
@@ -606,7 +629,7 @@ module.exports = function(app) {
                             objResult: objResult,
                             mostrarTitulo: mostrarTitulo,
                             mostrarMensaje: mostrarMensaje,
-                            modo:modo
+                            modo: modo
                         });
                     });
                 });
@@ -654,7 +677,7 @@ module.exports = function(app) {
             // console.log("se elimino", info);
 
             Categoria.destroyById(idCategoria, function(err) {
-                modo=true;
+                modo = true;
                 var mostrarTitulo = "Categoria eliminada";
                 var mostrarMensaje = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
                 Categoria.find({}, function(err, objResult) {
@@ -663,7 +686,7 @@ module.exports = function(app) {
                         objResult: objResult,
                         mostrarTitulo: mostrarTitulo,
                         mostrarMensaje: mostrarMensaje,
-                        modo:modo
+                        modo: modo
                     });
                 });
 
@@ -770,7 +793,7 @@ module.exports = function(app) {
                     objResult: objResult,
                     mostrarMensaje: mostrarMensaje,
                     mostrarTitulo: mostrarTitulo,
-                    modo:modo
+                    modo: modo
                 })
             });
 
