@@ -33,13 +33,13 @@ html
 
     //Cuerpo
     .ui.container
-      if cab && mes
-        .ui.positive.message
+      if mostrarTitulo && mostrarMensaje
+        .ui.message
           i.close.icon
           .header
-            | #{cab}
+            | #{mostrarTitulo}
           p
-            | #{mes}
+            | #{mostrarMensaje}
 
 
       //----Quitando formulario y boton edita
@@ -100,7 +100,7 @@ html
   //- script.
     //- var obj=!{JSON.stringify(mostrar)}
     //- console.log("-->", obj)
-    //- var cab
+    //- var mostrarTitulo
     //- $('#message_oculto').hide();
     //- if(obj){
     //-   $("#message_oculto").show();
@@ -121,13 +121,19 @@ html
     //- }
   
   script.
-    $(".positive.message .close")
+
+    $(".message .close")
       .on("click",function(){
         $(this)
-          .closest(".positive.message")
+          .closest(".message")
           .transition("fade");
       });
 
+    if(!{modo}){
+      $(".ui.message").addClass("positive");
+    }else{
+      $(".ui.message").addClass("negative");
+    }
 
 
   script.
@@ -145,9 +151,9 @@ html
             //- if(idCategoriaDelete){
             //-   $.get('/categoria/eliminar?id='+idCategoriaDelete,function(payload){
             //-     if(payload && payload.existe){
-            //-       cab="Categoria eliminada";
+            //-       mostrarTitulo="Categoria eliminada";
             //-       mes="Categoria con id "+payload.id+" fue eliminado exitosamente";
-            //-       $("#message_header").text(cab);
+            //-       $("#message_header").text(mostrarTitulo);
             //-       $("#message_parrafo").text(mes);
             //-       $("#message_oculto").show();                  
             //-     }

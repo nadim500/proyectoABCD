@@ -262,9 +262,14 @@ module.exports = function(app) {
 
     router.post('/editarproducto', function(req, res) {
         var idProducto = req.body.idProducto;
+        var modo;
         console.log("*********", idProducto);
         Producto.findById(idProducto, function(err, objResult) {
             if (err) return res.sendStatus(404);
+            var exNombre = objResult.nombre;
+            modo=true;
+            var mostrarTitulo = "Edicion de Producto"
+            var mostrarMensaje = "El producto " + exNombre + " con id " + idProducto + " fue editado exitosamente";
             objResult.nombre = req.body.nuevoNombre;
             objResult.precio = req.body.nuevoPrecio;
             objResult.cantidad = req.body.nuevoCantidad;
@@ -280,8 +285,10 @@ module.exports = function(app) {
                     return obj.toJSON();
                 });
                 return res.render('producto', {
-                    objResult_producto: objResult_producto
-
+                    objResult_producto: objResult_producto,
+                    mostrarTitulo: mostrarTitulo,
+                    mostrarMensaje: mostrarMensaje,
+                    modo:modo
                     //Categoria.find({}, function(err, objResult_categoria) {
                     //    Producto.find({}, function(err, objResult_producto) {
                     //        if (err) return res.sendStatus(404);
@@ -376,6 +383,7 @@ module.exports = function(app) {
 
 
     router.post('/producto', function(req, res) {
+        var modo;
         var nuevoProducto = {
                 nombre: req.body.nombre,
                 precio: req.body.precio,
@@ -384,17 +392,50 @@ module.exports = function(app) {
                 categoriaId: req.body.categoriaId
             }
             //console.log(nuevoProducto);
-
-        Producto.create(nuevoProducto, function(err, obj) {
-            Producto.find({}, function(err, objResult_producto) {
-                if (err) return res.sendStatus(404);
-                return res.render('producto', {
-                    objResult_producto: objResult_producto
+        console.log("--->", nuevoProducto.nombre);
+        Producto.find({
+            where: {
+                nombre: nuevoProducto.nombre
+            }
+        }, function(err, objExiste) {
+            console.log("wtffff!", objExiste);
+            if (err) return res.sendStatus(404);
+            else if (objExiste.length != 0) {
+                modo=false;
+                var mostrarTitulo = "Creacion de Producto";
+                var mostrarMensaje = "El producto ya existe";
+                Producto.find({}, function(err, objResult_producto) {
+                    if (err) return res.sendStatus(404);
+                    return res.render('producto', {
+                        objResult_producto: objResult_producto,
+                        mostrarTitulo: mostrarTitulo,
+                        mostrarMensaje: mostrarMensaje,
+                        modo:modo
+                    });
                 });
-            });
+            } else {
+                modo=true;
+                var mostrarTitulo = "Creacion de Producto";
+                var mostrarMensaje = "El producto " + nuevoProducto.nombre + " se creo exitosamente";
+                Producto.create(nuevoProducto, function(err, obj) {
+                    Producto.find({}, function(err, objResult_producto) {
+                        if (err) return res.sendStatus(404);
+                        return res.render('producto', {
+                            objResult_producto: objResult_producto,
+                            mostrarTitulo: mostrarTitulo,
+                            mostrarMensaje: mostrarMensaje,
+                            modo:modo
+                        });
+                    });
+                });
+            }
         });
+    });
 
-        /*Categoria.find({}, function(err, objResult_categoria) {
+
+
+
+    /*Categoria.find({}, function(err, objResult_categoria) {
             Producto.create(nuevoProducto, function(err, obj) {
                 if (err) res.render('crearproducto', {
                     message: "error producido",
@@ -406,7 +447,7 @@ module.exports = function(app) {
                 });
             });
         });*/
-    });
+
 
     router.get('/producto/eliminar', function(req, res) {
         var idProducto = req.query.id;
@@ -433,8 +474,10 @@ module.exports = function(app) {
 
     router.post('/producto/eliminar', function(req, res) {
         var idProducto = req.body.id;
+        var modo;
         Producto.destroyById(idProducto, function(err) {
             if (err) return res.sendStatus(404);
+            modo = true;
             var mostrarTitulo = "Producto eliminado";
             var mostrarMensaje = "El producto con id " + idProducto + " fue eliminado exitosamente";
             Producto.find({
@@ -447,7 +490,8 @@ module.exports = function(app) {
                 return res.render('producto', {
                     objResult_producto: objResult_producto,
                     mostrarTitulo: mostrarTitulo,
-                    mostrarMensaje: mostrarMensaje
+                    mostrarMensaje: mostrarMensaje,
+                    modo:modo
                 });
             });
         });
@@ -526,21 +570,50 @@ module.exports = function(app) {
 
     router.post('/categoria', function(req, res) {
         debug('req.body', req.body);
-
+        var modo;
         var nuevaCategoria = {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion
         }
 
-        Categoria.create(nuevaCategoria, function(err, obj) {
-            Categoria.find({}, function(err, objResult) {
-                if (err) return res.sendStatus(404);
-                return res.render('categoria', {
-                    objResult: objResult
+        Categoria.find({
+            where: {
+                nombre: nuevaCategoria.nombre
+            }
+        }, function(err, objExiste) {
+            if (err) return res.sendStatus(404);
+            else if (objExiste.length != 0) {
+                var mostrarTitulo = "Creacion de Categoria";
+                var mostrarMensaje = "La categoria ya existe";
+                modo = false;
+                Categoria.find({}, function(err, objResult) {
+                    if (err) return res.sendStatus(404);
+                    return res.render('categoria', {
+                        objResult: objResult,
+                        mostrarTitulo:mostrarTitulo,
+                        mostrarMensaje:mostrarMensaje,
+                        modo:modo
+                    });
                 });
-            });
+            } else {
+                var mostrarTitulo = "Creacion de Categoria";
+                var mostrarMensaje = "La categoria " + nuevaCategoria.nombre + " fue creada exitosamente";
+                modo = true;
+                Categoria.create(nuevaCategoria, function(err, obj) {
+                    Categoria.find({}, function(err, objResult) {
+                        if (err) return res.sendStatus(404);
+                        return res.render('categoria', {
+                            objResult: objResult,
+                            mostrarTitulo: mostrarTitulo,
+                            mostrarMensaje: mostrarMensaje,
+                            modo:modo
+                        });
+                    });
+                });
+            }
         });
-        /*Categoria.create(nuevaCategoria, function(err, obj) {
+    });
+    /*Categoria.create(nuevaCategoria, function(err, obj) {
             if (err) {
                 debug("err", err);
                 res.render('crearcategoria', {
@@ -551,7 +624,7 @@ module.exports = function(app) {
                 message: "objeto guardado con exito"
             });
         });*/
-    });
+
 
     router.get('/categoria/crear', function(req, res) {
 
@@ -563,6 +636,7 @@ module.exports = function(app) {
 
     router.post('/categoria/eliminar', function(req, res) {
         var idCategoria = req.body.id;
+        var modo;
 
         console.log('-->idCategoria', idCategoria);
 
@@ -580,15 +654,16 @@ module.exports = function(app) {
             // console.log("se elimino", info);
 
             Categoria.destroyById(idCategoria, function(err) {
-                var cab = "Categoria eliminada";
-                var mes = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
-
+                modo=true;
+                var mostrarTitulo = "Categoria eliminada";
+                var mostrarMensaje = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
                 Categoria.find({}, function(err, objResult) {
                     if (err) return res.sendStatus(404);
                     else return res.render('categoria', {
                         objResult: objResult,
-                        cab: cab,
-                        mes: mes
+                        mostrarTitulo: mostrarTitulo,
+                        mostrarMensaje: mostrarMensaje,
+                        modo:modo
                     });
                 });
 
@@ -679,18 +754,23 @@ module.exports = function(app) {
 
     router.post('/editarCategoria', function(req, res) {
         var idCategoria = req.body.categoriaId;
+        var modo;
         Categoria.findById(idCategoria, function(err, objResult_categoria) {
             if (err) return res.sendStatus(404);
-
-
             console.log("->", objResult_categoria);
+            var mostrarTitulo = "Edicion de Categoria";
+            var mostrarMensaje = "La categoria " + objResult_categoria.nombre + " con id " + idCategoria + " fue editado exitosamente";
+            modo = true;
             objResult_categoria.nombre = req.body.nuevoNombre;
             objResult_categoria.descripcion = req.body.nuevaDescripcion;
             objResult_categoria.save();
             Categoria.find({}, function(err, objResult) {
                 if (err) return res.sendStatus(404);
                 else return res.render('categoria', {
-                    objResult: objResult
+                    objResult: objResult,
+                    mostrarMensaje: mostrarMensaje,
+                    mostrarTitulo: mostrarTitulo,
+                    modo:modo
                 })
             });
 

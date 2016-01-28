@@ -33,7 +33,7 @@ html
           a.ui.black.button(href='/salir') Salir
     .ui.container
       if mostrarMensaje && mostrarTitulo
-        .ui.positive.message
+        .ui.message
           i.close.icon
           .header
             | #{mostrarTitulo}
@@ -131,12 +131,18 @@ html
           input#input_categoria_delete(name="id" type="hidden")
 
   script.
-    $(".positive.message .close")
+    $(".message .close")
       .on("click",function(){
         $(this)
-          .closest(".positive.message")
+          .closest(".message")
           .transition("fade");
       });
+
+    if(!{modo}){
+      $(".ui.message").addClass("positive");
+    }else{
+      $(".ui.message").addClass("negative");
+    }
 
   script.
 
