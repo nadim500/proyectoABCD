@@ -28,10 +28,11 @@
   "validations": [],
   "relations": {
     "categorias": {
-      "type": "hasAndBelongsToMany",
+      "type": "hasMany",
       "model": "Categoria",
-      "foreignKey": ""
-    },
+      "foreignKey": "productoId",
+      "through": "Categoria_Producto"
+    }
   },
   "acls": [],
   "methods": {}

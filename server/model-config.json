@@ -43,5 +43,9 @@
   "Usuario": {
     "dataSource": "db",
     "public": true
+  },
+  "Categoria_Producto": {
+    "dataSource": "db",
+    "public": true
   }
 }

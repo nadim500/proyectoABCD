@@ -1,0 +1,24 @@
+{
+  "name": "Categoria_Producto",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "categoria": {
+      "type": "belongsTo",
+      "model": "Categoria",
+      "foreignKey": "categoriaId"
+    },
+    "producto": {
+      "type": "belongsTo",
+      "model": "Producto",
+      "foreignKey": "productoId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
