@@ -21,9 +21,9 @@
   "validations": [],
   "relations": {
     "productos": {
-      "type": "hasMany",
+      "type": "hasAndBelongsToMany",
       "model": "Producto",
-      "foreignKey": "categoriaId"
+      "foreignKey": ""
     }
   },
   "acls": [],
