@@ -116,6 +116,72 @@ module.exports = function(app) {
         console.log(obj);
     });
 
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+
+    router.post('/prueba', function(req, res) {
+
+        /*Producto.create(function(err,producto){
+        
+        var categoria = Producto.Categoria.build({
+          nombre: req.body.nombre,
+          descripcion:req.body.descripcion
+        })
+        console.log("---->",categoria);
+
+      })*/
+
+        var categoria = {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion
+        }
+        var producto = {
+                nombre: 'prueba',
+                precio: '50.00',
+                cantidad: '5',
+                descripcion: 'sirve para descanzar'
+            }
+            /*Producto.create(producto, function(err, product) {
+            console.log(product);
+            Categoria.create(categoria, function(err, categ) {
+                console.log(categ);
+                product.Categoria.add(categ, function(err, obj) {
+                    console.log(obj);
+                })
+            });
+        })*/
+        Categoria.productos.create(producto, function() {
+            console.log("exito");
+        })
+
+         var nuevoProducto = {
+            nombre: req.body.nombre,
+            precio: req.body.precio,
+            cantidad: req.body.cantidad,
+            descripcion: req.body.descripcion,        }
+
+        var categoriaId = req.body.categoriaId;
+
+        Categoria.findById(categoriaId, function(err, cat) {
+          // err
+          cat.productos.create(nuevoProducto, function(err, newProducto) {
+            // er
+            console.log("DONE");
+            return res.sendStatus(400);
+          });
+        });
+
+
+
+
+    })
+
+
+
+
+    //--------------------------------------------------------------------//
+    //--------------------------------------------------------------------//
+
     router.get('/homepage', function(req, res) {
         res.render('homepage');
     });
@@ -148,6 +214,8 @@ module.exports = function(app) {
             });
         }
     });
+
+
 
 
 
@@ -406,6 +474,7 @@ module.exports = function(app) {
 
 
     router.post('/producto', function(req, res) {
+
         var modo;
         var nuevoProducto = {
                 nombre: req.body.nombre,
@@ -453,6 +522,7 @@ module.exports = function(app) {
                 });
             }
         });
+    
     });
 
 
