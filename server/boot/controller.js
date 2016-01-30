@@ -207,7 +207,8 @@ module.exports = function(app) {
                 if (err) return res.sendStatus(404);
                 return res.render('login')
             });
-        } else {
+        }
+        else {
 
             console.log("____-------_____-");
             res.render('nuevoUsuario', {
@@ -296,7 +297,8 @@ module.exports = function(app) {
                             modo: modo
                         });
                     });
-                } else {
+                }
+                else {
 
                     return res.render('crearproducto', {
                         objResult_categoria: objResult_categoria
@@ -304,7 +306,8 @@ module.exports = function(app) {
                 }
 
             });
-        } else return res.redirect('login');
+        }
+        else return res.redirect('login');
     });
 
     router.get('/producto/editar', function(req, res) {
@@ -400,21 +403,36 @@ module.exports = function(app) {
             var idCategoria = req.query.idCategoria;
             console.log(idCategoria);
             if (idCategoria != undefined) {
+                
+                Categoria.find({where:{id:idCategoria}},function(err,categoria){
+                    console.log("---->categoria:",categoria);
+                    categoria = categoria[0];
+                    categoria.productos({},function(err,objResult_producto){
+                        if(err) return res.sendStatus(404);
+                        objResult_producto = objResult_producto.map(function(obj){
+                            return obj.toJSON();
+                        });
+                        res.render('producto',{
+                            objResult_producto:objResult_producto,
+                            categoria:categoria
+                        })
+                    });
+                });
 
-                Producto.find({
-                    where: {
-                        categoriaId: idCategoria
-                    },
-                    include: ['categorias']
-                }, function(err, objResult_producto) {
-                    if (err) return res.sendStatus(404);
-                    objResult_producto = objResult_producto.map(function(obj) {
-                        return obj.toJSON();
-                    })
-                    res.render('producto', {
-                        objResult_producto: objResult_producto
-                    })
-                })
+                //Producto.find({
+                //    where: {
+                //        categoriaId: idCategoria
+                //    },
+                //    include: ['categorias']
+                //}, function(err, objResult_producto) {
+                //    if (err) return res.sendStatus(404);
+                //    objResult_producto = objResult_producto.map(function(obj) {
+                //        return obj.toJSON();
+                //    })
+                //    res.render('producto', {
+                //        objResult_producto: objResult_producto
+                //    })
+                //})
 
                 //Categoria.find({}, function(err, objResult_categoria) {
                 //    Producto.find({
@@ -432,28 +450,32 @@ module.exports = function(app) {
 
                 //Producto.find({include:categorias:['tipo']})
 
-            } else Producto.find({
-                include: ['categorias']
-            }, function(err, objResult_producto) {
-                if (err) return res.sendStatus(404);
-                objResult_producto = objResult_producto.map(function(obj) {
-                    return obj.toJSON();
-                });
-                return res.render('producto', {
-                    objResult_producto: objResult_producto
+            }
+            else {
+                Producto.find({
+                    include: ['categorias']
+                }, function(err, objResult_producto) {
+                    if (err) return res.sendStatus(404);
+                    objResult_producto = objResult_producto.map(function(obj) {
+                        return obj.toJSON();
+                    });
+                    return res.render('producto', {
+                        objResult_producto: objResult_producto
 
-                    //Categoria.find({}, function(err, objResult_categoria) {
-                    //    Producto.find({}, function(err, objResult_producto) {
-                    //        if (err) res.sendStatus(404);
-                    //        else res.render('producto', {
-                    //            objResult_producto: objResult_producto,
-                    //            objResult_categoria: objResult_categoria
-                    //        });
-                    //    });
+                        //Categoria.find({}, function(err, objResult_categoria) {
+                        //    Producto.find({}, function(err, objResult_producto) {
+                        //        if (err) res.sendStatus(404);
+                        //        else res.render('producto', {
+                        //            objResult_producto: objResult_producto,
+                        //            objResult_categoria: objResult_categoria
+                        //        });
+                        //    });
 
+                    });
                 });
-            });
-        } else
+            }
+        }
+        else
             return res.redirect('login');
     });
 
@@ -508,7 +530,8 @@ module.exports = function(app) {
                         modo: modo
                     });
                 });
-            } else {
+            }
+            else {
                 modo = true;
                 var mostrarTitulo = "Creacion de Producto";
                 var mostrarMensaje = "El producto " + nuevoProducto.nombre + " se creo exitosamente";
@@ -526,7 +549,8 @@ module.exports = function(app) {
                             });
                         });
                     });
-                } else {
+                }
+                else {
 
                     Categoria.findById(categoriaId, function(err, categoria) {
                         categoria.productos.create(nuevoProducto, function(err, obj) {
@@ -633,7 +657,8 @@ module.exports = function(app) {
 
             if (err) {
                 return res.sendStatus(500);
-            } else {
+            }
+            else {
                 return res.sendStatus(200);
             }
         });
@@ -732,7 +757,8 @@ module.exports = function(app) {
                     objResult: objResult
                 });
             });
-        } else return res.redirect('login')
+        }
+        else return res.redirect('login')
     });
 
     router.post('/categoria', function(req, res) {
@@ -765,7 +791,8 @@ module.exports = function(app) {
                         modo: modo
                     });
                 });
-            } else {
+            }
+            else {
                 var mostrarTitulo = "Creacion de Categoria";
                 var mostrarMensaje = "La categoria " + nuevaCategoria.nombre + " fue creada exitosamente";
                 modo = true;
@@ -782,7 +809,8 @@ module.exports = function(app) {
                             });
                         });
                     });
-                } else {
+                }
+                else {
                     Producto.findById(productoId, function(err, producto) {
                         if (err) return res.sendStatus(404);
                         producto.categorias.create(nuevaCategoria, function(err, obj) {
@@ -867,7 +895,8 @@ module.exports = function(app) {
                     objResult_producto: objResult_producto
                 });
             })
-        } else
+        }
+        else
             return res.redirect('login');
     });
 

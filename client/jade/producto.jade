@@ -47,8 +47,8 @@ html
           tr
             th.ui.center.aligned Id
             th.ui.center.aligned Nombre
-            th.ui.center.aligned Precio
             th.ui.center.aligned Stock
+            th.ui.center.aligned Categoria
           //  th.ui.center.aligned Descripcion
           //  th.ui.center.aligned Categoria
         tbody
@@ -82,8 +82,9 @@ html
                   -i=i+1
 
 
-                th.ui.center.aligned #{producto.precio}
                 th.ui.center.aligned #{producto.cantidad}
+                
+                th.ui.center.aligned #{categoria.nombre}
               //  th.ui.center.aligned #{producto.descripcion}
               //  //-each categoria in objResult_categoria
               //    if producto.categoriaId == categoria.id
