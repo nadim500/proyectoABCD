@@ -28,7 +28,7 @@ html
       //.ui.form
       if message != undefined
         p #{message}
-      form.ui.form(action='/prueba' method='post')
+      form.ui.form(action='/categoria' method='post')
         .field
           .fields
             .ten.wide.fields
@@ -39,6 +39,18 @@ html
           .fields
             .six.wide.field
               input(type='text' name='nombre' placeholder='Nombre')
+
+        .field
+          label Productos
+          .fields
+            .three.wide.fields
+              select.ui.search.dropdown(name="productoId")
+                option(value="none") ...
+                each producto in objResult_producto
+                  option(value=producto.id) #{producto.nombre}
+                i.dropdown.icon
+                .default.text Producto
+
 
         .field
           label Descripcion

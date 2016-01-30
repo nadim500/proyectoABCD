@@ -154,21 +154,22 @@ module.exports = function(app) {
             console.log("exito");
         })
 
-         var nuevoProducto = {
+        var nuevoProducto = {
             nombre: req.body.nombre,
             precio: req.body.precio,
             cantidad: req.body.cantidad,
-            descripcion: req.body.descripcion,        }
+            descripcion: req.body.descripcion,
+        }
 
         var categoriaId = req.body.categoriaId;
 
         Categoria.findById(categoriaId, function(err, cat) {
-          // err
-          cat.productos.create(nuevoProducto, function(err, newProducto) {
-            // er
-            console.log("DONE");
-            return res.sendStatus(400);
-          });
+            // err
+            cat.productos.create(nuevoProducto, function(err, newProducto) {
+                // er
+                console.log("DONE");
+                return res.sendStatus(400);
+            });
         });
 
 
@@ -476,6 +477,79 @@ module.exports = function(app) {
     router.post('/producto', function(req, res) {
 
         var modo;
+        var categoriaId = req.body.categoriaId;
+
+        var nuevoProducto = {
+                nombre: req.body.nombre,
+                precio: req.body.precio,
+                cantidad: req.body.cantidad,
+                descripcion: req.body.descripcion,
+            }
+            //console.log(nuevoProducto);
+        console.log("--->", nuevoProducto.nombre);
+
+        Producto.find({
+            where: {
+                nombre: nuevoProducto.nombre
+            }
+        }, function(err, objExiste) {
+            console.log("wtffff!", objExiste);
+            if (err) return res.sendStatus(404);
+            else if (objExiste.length != 0) {
+                modo = false;
+                var mostrarTitulo = "Creacion de Producto";
+                var mostrarMensaje = "El producto ya existe";
+                Producto.find({}, function(err, objResult_producto) {
+                    if (err) return res.sendStatus(404);
+                    return res.render('producto', {
+                        objResult_producto: objResult_producto,
+                        mostrarTitulo: mostrarTitulo,
+                        mostrarMensaje: mostrarMensaje,
+                        modo: modo
+                    });
+                });
+            } else {
+                modo = true;
+                var mostrarTitulo = "Creacion de Producto";
+                var mostrarMensaje = "El producto " + nuevoProducto.nombre + " se creo exitosamente";
+
+                if (categoriaId == "none") {
+
+                    Producto.create(nuevoProducto, function(err, obj) {
+                        Producto.find({}, function(err, objResult_producto) {
+                            if (err) return res.sendStatus(404);
+                            return res.render('producto', {
+                                objResult_producto: objResult_producto,
+                                mostrarTitulo: mostrarTitulo,
+                                mostrarMensaje: mostrarMensaje,
+                                modo: modo
+                            });
+                        });
+                    });
+                } else {
+
+                    Categoria.findById(categoriaId, function(err, categoria) {
+                        categoria.productos.create(nuevoProducto, function(err, obj) {
+                            Producto.find({}, function(err, objResult_producto) {
+                                if (err) return res.sendStatus(404);
+                                return res.render('producto', {
+                                    objResult_producto: objResult_producto,
+                                    mostrarTitulo: mostrarTitulo,
+                                    mostrarMensaje: mostrarMensaje,
+                                    modo: modo
+                                });
+                            });
+                        });
+                    });
+                }
+
+
+            }
+        });
+    });
+
+
+    /*var modo;
         var nuevoProducto = {
                 nombre: req.body.nombre,
                 precio: req.body.precio,
@@ -521,9 +595,9 @@ module.exports = function(app) {
                     });
                 });
             }
-        });
-    
-    });
+        });*/
+
+
 
 
 
@@ -662,7 +736,73 @@ module.exports = function(app) {
     });
 
     router.post('/categoria', function(req, res) {
-        debug('req.body', req.body);
+
+
+
+        var productoId = req.body.productoId;
+        var modo;
+        var nuevaCategoria = {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion
+        }
+
+        Categoria.find({
+            where: {
+                nombre: nuevaCategoria.nombre
+            }
+        }, function(err, objExiste) {
+            if (err) return res.sendStatus(404);
+            else if (objExiste.length != 0) {
+                var mostrarTitulo = "Creacion de Categoria";
+                var mostrarMensaje = "La categoria ya existe";
+                modo = false;
+                Categoria.find({}, function(err, objResult) {
+                    if (err) return res.sendStatus(404);
+                    return res.render('categoria', {
+                        objResult: objResult,
+                        mostrarTitulo: mostrarTitulo,
+                        mostrarMensaje: mostrarMensaje,
+                        modo: modo
+                    });
+                });
+            } else {
+                var mostrarTitulo = "Creacion de Categoria";
+                var mostrarMensaje = "La categoria " + nuevaCategoria.nombre + " fue creada exitosamente";
+                modo = true;
+
+                if (productoId == "none") {
+                    Categoria.create(nuevaCategoria, function(err, obj) {
+                        Categoria.find({}, function(err, objResult) {
+                            if (err) return res.sendStatus(404);
+                            return res.render('categoria', {
+                                objResult: objResult,
+                                mostrarTitulo: mostrarTitulo,
+                                mostrarMensaje: mostrarMensaje,
+                                modo: modo
+                            });
+                        });
+                    });
+                } else {
+                    Producto.findById(productoId, function(err, producto) {
+                        if (err) return res.sendStatus(404);
+                        producto.categorias.create(nuevaCategoria, function(err, obj) {
+                            Categoria.find({}, function(err, objResult) {
+                                if (err) return res.sendStatus(404);
+                                return res.render('categoria', {
+                                    objResult: objResult,
+                                    mostrarTitulo: mostrarTitulo,
+                                    mostrarMensaje: mostrarMensaje,
+                                    modo: modo
+                                });
+                            });
+                        });
+                    });
+                }
+            }
+        });
+    });
+
+    /*debug('req.body', req.body);
         var modo;
         var nuevaCategoria = {
             nombre: req.body.nombre,
@@ -704,8 +844,8 @@ module.exports = function(app) {
                     });
                 });
             }
-        });
-    });
+        });*/
+    //-------------------------------------------------------------------------------------//
     /*Categoria.create(nuevaCategoria, function(err, obj) {
             if (err) {
                 debug("err", err);
@@ -722,7 +862,11 @@ module.exports = function(app) {
     router.get('/categoria/crear', function(req, res) {
 
         if (sesion) {
-            return res.render('crearcategoria');
+            Producto.find({}, function(err, objResult_producto) {
+                return res.render('crearcategoria', {
+                    objResult_producto: objResult_producto
+                });
+            })
         } else
             return res.redirect('login');
     });

@@ -44,6 +44,7 @@ html
           .fields
             .three.wide.fields                
               select.ui.search.dropdown(name='categoriaId')
+                option(value="none") ...
                 each categoria in objResult_categoria
                   option(value=categoria.id) #{categoria.nombre}
                 i.dropdown.icon
