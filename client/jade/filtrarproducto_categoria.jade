@@ -1,0 +1,225 @@
+doctype html
+html
+  head
+    title Menu Categoria
+    meta(charset='UTF-8')
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")  
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+    script(src="../js/semantic.min.js")
+    link(rel='stylesheet' type='text/css' href='../css/semantic.min.css')
+    style.
+      .item_tr:hover {
+        background: #A1CCEC;
+      }
+      i.trash.icon.icono_trash {
+        color: #4183C4;
+        cursor: pointer;
+      }
+  body
+
+    //MENU
+    .ui.large.menu
+      .ui.container
+        a.item(href='/producto') Productos
+        a.active.selection.item(href='/categoria') Categorias
+      .menu
+        .item
+          .ui.icon.input
+            input(type='text' placeholder='search...')
+            i.search.icon
+        .item
+          a.ui.black.button(href='/salir') Salir
+
+    //Cuerpo
+    .ui.container
+      if mostrarTitulo && mostrarMensaje
+        .ui.message
+          i.close.icon
+          .header
+            | #{mostrarTitulo}
+          p
+            | #{mostrarMensaje}
+
+
+      //----Quitando formulario y boton edita
+      //form(action='/categoria/editar' method='post')
+      table.ui.fixed.table
+        thead
+          tr
+            th.ui.center.aligned Id
+            th.ui.center.aligned Categoria filtrada
+            th.ui.center.aligned Producto
+        tbody
+          each categoria in objResult
+            tr.ui.form.item_tr
+              .inline.fields
+                th.ui.center.aligned 
+                  .two.fields
+                    .field
+                    
+                        a(href='/categoria/editar?id='+categoria.id)
+                          i.write.icon.icono_write
+                        i.trash.icon.icono_trash(attr_id=categoria.id)
+                    .field
+                      .fields
+                        .one.wide.field
+                          label #{categoria.id}
+                th.ui.center.aligned
+                  label.table_show(attr_obj=JSON.stringify(categoria)) #{categoria.nombre}
+
+
+                th.ui.center.aligned
+                  label #{producto.nombre}
+
+                //th.ui.center.aligned
+                  label.table_show(attr_obj=JSON.stringify(categoria)) #{categoria.descripcion}
+
+      a.ui.black.button#boton_probando Editar
+      a.ui.black.button(href='/categoria/crear') Crear
+      //input.ui.black.button(type='submit' value='Editar')
+
+      div.ui.modal.principal
+        div.header Informacion
+        div.content
+          h4 Id
+          #categoria_id
+          h4 Nombre
+          #categoria_nombre
+          h4 Descripcion
+          #categoria_descripcion
+
+      .ui.small.modal
+        .header Borrar Categoria
+        .content ¿Esta seguro de eliminar esta categoria, tambien se eliminaran los productos que pertenezcan a esta categoria?
+        .actions
+          .ui.negative.button No
+          .ui.positive.right.labeled.icon.button Yes
+            i.checkmark.icon
+        form(id="form_delete" action="/categoria/eliminar" method="POST")
+          input#input_id_delete(type="hidden", name="id")
+  //- script.
+    //- var obj=!{JSON.stringify(mostrar)}
+    //- console.log("-->", obj)
+    //- var mostrarTitulo
+    //- $('#message_oculto').hide();
+    //- if(obj){
+    //-   $("#message_oculto").show();
+    //-   $("#message_header").text();
+    //-   $("message_parrafo").text();
+    //- }
+
+
+  //- script.
+    //- $(document).ready(function() {
+      
+    //- });
+    //$("#message_oculto").hide();
+
+    //var message = !{JSON.stringify(message)};
+    //- if(message!=undefined){
+    //-   $(".ui.positive.message").show();
+    //- }
+  
+  script.
+
+    $(".message .close")
+      .on("click",function(){
+        $(this)
+          .closest(".message")
+          .transition("fade");
+      });
+
+    if(!{modo}){
+      $(".ui.message").addClass("positive");
+    }else{
+      $(".ui.message").addClass("negative");
+    }
+
+
+  script.
+    //mes="";
+    //var idCategoriaDelete='';
+    $('.icono_trash').on('click',function(){
+      var   idCategoriaDelete=$(this).attr("attr_id");
+      $('.ui.small.modal')
+        .modal({
+          closable:false,
+          onApprove:function(){
+            $("#input_id_delete").attr("value",idCategoriaDelete);
+            $("#form_delete").submit();
+
+            //- if(idCategoriaDelete){
+            //-   $.get('/categoria/eliminar?id='+idCategoriaDelete,function(payload){
+            //-     if(payload && payload.existe){
+            //-       mostrarTitulo="Categoria eliminada";
+            //-       mes="Categoria con id "+payload.id+" fue eliminado exitosamente";
+            //-       $("#message_header").text(mostrarTitulo);
+            //-       $("#message_parrafo").text(mes);
+            //-       $("#message_oculto").show();                  
+            //-     }
+            //-   });
+            //-   location.reload();
+            //- }
+          }
+        })
+        .modal('show');
+    });
+
+          
+  script.
+    $(".icono_write").hide();
+    $(".icono_trash").hide();
+    $("#boton_probando").on("click",function(){
+      //- $(".icono_write").attr("style","visibility:visible");
+      //- $(".icono_trash").attr("style","visibility:visible");
+      $(".icono_write").toggle();
+      $(".icono_trash").toggle();
+      });
+  
+          
+  script.
+    $(".table_show").on("click",function(event){
+      var attr_obj=$(this).attr("attr_obj");
+      attr_obj=JSON.parse(attr_obj);
+
+      var attr_nombre=attr_obj.nombre;
+      var attr_descripcion=attr_obj.descripcion;
+      var attr_id=attr_obj.id;
+
+      $('#categoria_id').text(attr_id);
+      $('#categoria_nombre').text(attr_nombre);
+      $('#categoria_descripcion').text(attr_descripcion);
+      $('.ui.modal.principal').modal('show');
+
+    });
+
+
+
+
+
+
+
+  //  a(href='/producto') Productos
+  //  a(href='/categoria') Categorias
+  //  br
+  //  form(action='/categoria/editar' method='post')
+  //    table(style='width:60%')
+  //      tr
+  //        th Id
+  //        th Nombre
+  //        th Descripcion
+  //      each categoria in objResult
+  //        tr
+  //          th
+  //            input(type='radio' name='idCategoria' value=categoria.id)
+  //            | #{categoria.id}
+  //          th
+  //            a(href='/producto?idCategoria='+categoria.id) #{categoria.//nombre}//
+  //          th #{cate//goria.descripcion}//
+  //    br//
+  //    in//put(type='submit' value='Editar')//
+  //  a.btn-crear(href='/categoria/crear')//
+  //    button.btn-crear(type='button') Crear
+  //  br
+  

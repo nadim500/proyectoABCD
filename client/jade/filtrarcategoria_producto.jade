@@ -19,7 +19,7 @@ html
       }
     
   body
-    
+    -var i=1
     .ui.large.top.menu
       .ui.container        
         a.active.selection.item(href='/producto') Productos
@@ -46,10 +46,10 @@ html
         thead
           tr
             th.ui.center.aligned Id
-            th.ui.center.aligned Nombre
-            //th.ui.center.aligned Stock
-            //th.ui.center.aligned Categoria
-            th.ui.center.aligned Descripcion
+            th.ui.center.aligned Producto filtrado
+            th.ui.center.aligned Stock
+            th.ui.center.aligned Categoria
+          //  th.ui.center.aligned Descripcion
           //  th.ui.center.aligned Categoria
         tbody
           each producto in objResult_producto
@@ -78,15 +78,16 @@ html
                   // -label(onClick="show('" + producto.nombre + "')" ) #{producto.nombre}
                   //-console.log('---->***',producto.categorias.nombre)
                   //- label.label_show(attr_nombre=producto.nombre, attr_descripcion=producto.descripcion, attr_precio=producto.precio, attr_cantidad=producto.cantidad, attr_id=producto.id, attr_categoria=producto.categorias.nombre) #{producto.nombre}
-                  a(href='/categoria?idProducto='+producto.id) #{producto.nombre}
-                
+                  label.label_show(attr_obj=JSON.stringify(producto)) #{producto.nombre}
+                  -i=i+1
 
 
-                //th.ui.center.aligned #{producto.cantidad}
-                
-                //  th.ui.center.aligned #{categoria.nombre}
                 th.ui.center.aligned
-                  label.table_show(attr_obj=JSON.stringify(producto)) #{producto.descripcion}
+                  label  #{producto.cantidad}
+                
+                th.ui.center.aligned
+                  label #{categoria.nombre}
+              //  th.ui.center.aligned #{producto.descripcion}
               //  //-each categoria in objResult_categoria
               //    if producto.categoriaId == categoria.id
               //      th #{categoria.nombre}
@@ -249,7 +250,7 @@ html
     
   script.
     // METODO CORRECTO
-    $(".table_show").on("click", function(event) {
+    $(".label_show").on("click", function(event) {
       var attr_obj = $(this).attr("attr_obj");
       attr_obj = JSON.parse( attr_obj );
 
