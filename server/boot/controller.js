@@ -26,6 +26,7 @@ module.exports = function(app) {
   Usuario.create(usuario_por_defecto, function(err, obj) {
     if (err) return res.sendStatus(404);
     console.log(obj);
+
   });
 
   /////////////////CATEGORIAS/////////////
@@ -34,87 +35,113 @@ module.exports = function(app) {
     nombre: 'mueble',
     descripcion: 'cosas para el hogar'
   };
-  Categoria.create(categoria1, function(err, obj) {
+  Categoria.create(categoria1, function(err, categoria) {
     if (err) return res.sendStatus(404);
-    console.log(obj);
+    var producto1 = {
+      nombre: 'sillon',
+      precio: '50.00',
+      cantidad: '5',
+      descripcion: 'Sirve para descanzar',
+    };
+    categoria.productos.create(producto1, function(err, obj) {
+      if (err) return res.sendStatus(404);
+    })
   });
   ///////////////////////////////////////////
   var categoria2 = {
     nombre: 'juegos',
     descripcion: 'para diversion'
   };
-  Categoria.create(categoria2, function(err, obj) {
+  Categoria.create(categoria2, function(err, categoria) {
     if (err) return res.sendStatus(404);
-    console.log(obj);
+    var producto2 = {
+      nombre: 'dota2',
+      precio: '100.00',
+      cantidad: '2',
+      descripcion: 'Millones lo juegan',
+      categoriaId: '2'
+    };
+    categoria.productos.create(producto2, function(err, obj) {
+      if (err) return res.sendStatus(404);
+    })
   });
   ///////////////////////////////////////////
   var categoria3 = {
     nombre: 'frutas',
     descripcion: 'alimentos naturales'
   };
-  Categoria.create(categoria3, function(err, obj) {
+  Categoria.create(categoria3, function(err, categoria) {
     if (err) return res.sendStatus(404);
-    console.log(obj);
+    var producto3 = {
+      nombre: 'platano',
+      precio: '0.50',
+      cantidad: '100',
+      descripcion: 'Rica en potasio',
+      categoriaId: '3'
+    };
+    categoria.productos.create(producto3, function(err, obj) {
+      if (err) return res.sendStatus(404);
+    })
   });
   ///////////////////////////////////////////
   var categoria4 = {
     nombre: 'proteinas',
     descripcion: 'para el desarrollo muscular'
   };
-  Categoria.create(categoria4, function(err, obj) {
+  Categoria.create(categoria4, function(err, categoria) {
     if (err) return res.sendStatus(404);
-    console.log(obj);
+    var producto4 = {
+      nombre: 'Whey Protein',
+      precio: '200.00',
+      cantidad: '1',
+      descripcion: 'gran regeneracion muscular',
+      categoriaId: '4'
+    };
+    categoria.productos.create(producto4, function(err, obj) {
+      if (err) return res.sendStatus(404);
+    })
   });
 
   ///////////PRODUCTOS///////////////////////
 
-  var producto1 = {
-    nombre: 'sillon',
-    precio: '50.00',
-    cantidad: '5',
-    descripcion: 'sirve para descanzar',
-    categoriaId: '1'
-  };
-  Producto.create(producto1, function(err, obj) {
-    if (err) return res.sendStatus(404);
-    console.log(obj);
-  });
+
   ///////////////////////////////////////////
-  var producto2 = {
-    nombre: 'dota2',
-    precio: '100.00',
-    cantidad: '2',
-    descripcion: 'Millones lo juegan',
-    categoriaId: '2'
-  };
-  Producto.create(producto2, function(err, obj) {
-    if (err) return res.sendStatus(404);
-    console.log(obj);
-  });
-  ///////////////////////////////////////////
-  var producto3 = {
-    nombre: 'platano',
-    precio: '0.50',
-    cantidad: '100',
-    descripcion: 'Rica en potasio',
-    categoriaId: '3'
-  };
-  Producto.create(producto3, function(err, obj) {
-    if (err) return res.sendStatus(404);
-    console.log(obj);
-  });
-  ///////////////////////////////////////////
-  var producto4 = {
-    nombre: 'Whey Protein',
-    precio: '200.00',
-    cantidad: '1',
-    descripcion: 'gran regeneracion muscular',
-    categoriaId: '4'
-  };
-  Producto.create(producto4, function(err, obj) {
-    if (err) return res.sendStatus(404);
-    console.log(obj);
-  });
+  //var producto2 = {
+  //var producto2 = {
+  //  nombre: 'dota2',
+  //  precio: '100.00',
+  //  cantidad: '2',
+  //  descripcion: 'Millones lo juegan',
+  //  categoriaId: '2'
+  //};
+  //Producto.create(producto2, function(err, obj) {
+  //  if (err) return res.sendStatus(404);
+  //  console.log(obj);
+  //});
+  /////////////////////////////////////////////
+  //var producto3 = {
+  //  nombre: 'platano',
+  //  precio: '0.50',
+  //  cantidad: '100',
+  //  descripcion: 'Rica en potasio',
+  //  categoriaId: '3'
+  //};
+  //Producto.create(producto3, function(err, obj) {
+  //  if (err) return res.sendStatus(404);
+  //  console.log(obj);
+  //});
+  /////////////////////////////////////////////
+  //var producto4 = {
+  //  nombre: 'Whey Protein',
+  //  precio: '200.00',
+  //  cantidad: '1',
+  //  descripcion: 'gran regeneracion muscular',
+  //  categoriaId: '4'
+  //};
+  //Producto.create(producto4, function(err, obj) {
+  //  if (err) return res.sendStatus(404);
+  //  console.log(obj);
+  //});
 
   //--------------------------------------------------------------------//
   //--------------------------------------------------------------------//
@@ -767,19 +794,23 @@ module.exports = function(app) {
       var idProducto = req.query.idProducto;
 
       if (idProducto != undefined) {
-        
-        Producto.find({where:{id:idProducto}},function(err,producto){
-          if(err) return res.sendStatus(404);
+
+        Producto.find({
+          where: {
+            id: idProducto
+          }
+        }, function(err, producto) {
+          if (err) return res.sendStatus(404);
           producto = producto[0];
-          producto.categorias({},function(err,objResult){
-            if(err) return res.sendStatus(404);
-            return res.render('filtrarproducto_categoria',{
-              producto:producto,
-              objResult:objResult
+          producto.categorias({}, function(err, objResult) {
+            if (err) return res.sendStatus(404);
+            return res.render('filtrarproducto_categoria', {
+              producto: producto,
+              objResult: objResult
             });
           });
         });
-        
+
       }
       else {
 
