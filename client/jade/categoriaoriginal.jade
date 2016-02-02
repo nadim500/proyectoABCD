@@ -29,7 +29,6 @@ html
       if message != undefined
         p #{message}
       form.ui.form(action='/categoria' method='post')
-        input#agregar_array(type="hidden" name="arrayId")
         .field
           .fields
             .ten.wide.fields
@@ -43,30 +42,18 @@ html
 
         .field
           label Productos
-          .a#conviertete
-            select(multiple="" name="productoId")
-              option(value="") Productos
-              each producto in objResult_producto
-                option(attr_id=producto.id value=producto.id) #{producto.nombre}
+          .fields
+            .three.wide.fields
+              select.ui.search.dropdown(name="productoId")
+                option(value="none") ...
+                each producto in objResult_producto
+                  option.option_hide(attr_id=producto.id value=producto.id) #{producto.nombre}
+                //i.dropdown.icon
+                  .default.text Producto
+            .ui.blue.labels(style="margin-top:auto")
+              a.ui.label prueba
+                i.icon.close
 
-          //- .ui.vertical.menu#conviertete
-          //-   .ui.dropdown.item
-          //-     i.dropdown.icon
-          //-     |     Colors
-          //-     select
-          //-       option Red
-          //-       option Black
-          //-       option Blue
-          //-       option Green
-          //-   .ui.dropdown.item
-          //-     i.dropdown.icon
-          //-     |     Sizes
-          //-     select
-          //-       option Small
-          //-       option Medium
-          //-       option Large
-          //-       option Huge
-      
 
         .field
           label Descripcion
@@ -76,19 +63,11 @@ html
         a.ui.black.button(href='/categoria') Cancelar
         input.ui.black.button(type='submit' value='Crear')
 
-  script.
-    var arrayId;
-    $("#conviertete select")
-      .dropdown({
-        action:'combo',
-        onChange:function(value,text,$choice){
-          arrayId=value;
-          arrayId=JSON.stringify(arrayId);
-          console.log(arrayId);
-          $("#agregar_array").val(arrayId);
-
-        }
-      });
+  //- script.
+  //-   $(".option_hide").on("click",function(event){
+  //-     var attr_id = $(this).attr("attr_id");
+  //-     $(this).hide();      
+  //-   })
 
 
   
