@@ -60,7 +60,6 @@ module.exports = function(app) {
             precio: '100.00',
             cantidad: '2',
             descripcion: 'Millones lo juegan',
-            categoriaId: '2'
         };
         categoria.productos.create(producto2, function(err, obj) {
             if (err) return res.sendStatus(404);
@@ -78,7 +77,6 @@ module.exports = function(app) {
             precio: '0.50',
             cantidad: '100',
             descripcion: 'Rica en potasio',
-            categoriaId: '3'
         };
         categoria.productos.create(producto3, function(err, obj) {
             if (err) return res.sendStatus(404);
@@ -96,7 +94,6 @@ module.exports = function(app) {
             precio: '200.00',
             cantidad: '1',
             descripcion: 'gran regeneracion muscular',
-            categoriaId: '4'
         };
         categoria.productos.create(producto4, function(err, obj) {
             if (err) return res.sendStatus(404);
@@ -532,9 +529,11 @@ module.exports = function(app) {
 
 
     router.post('/producto', function(req, res) {
+        var arrayId = req.body.arrayId;
+        arrayId = JSON.parse(arrayId);
 
         var modo;
-        var categoriaId = req.body.categoriaId;
+        //var categoriaId = req.body.categoriaId;
 
         var nuevoProducto = {
                 nombre: req.body.nombre,
@@ -550,7 +549,7 @@ module.exports = function(app) {
                 nombre: nuevoProducto.nombre
             }
         }, function(err, objExiste) {
-            console.log("wtffff!", objExiste);
+            //console.log("wtffff!", objExiste);
             if (err) return res.sendStatus(404);
             else if (objExiste.length != 0) {
                 modo = false;
@@ -570,7 +569,38 @@ module.exports = function(app) {
                 var mostrarTitulo = "Creacion de Producto";
                 var mostrarMensaje = "El producto " + nuevoProducto.nombre + " se creo exitosamente";
 
-                if (categoriaId == "none") {
+                var rep = arrayId.length;
+                var a = 0;
+
+                Producto.create(nuevoProducto, function(err, producto) {
+                    if (err) return res.sendStatus(404);
+                    _.times(rep, function() {
+                        var idCategoria = _.toInteger(arrayId[a]);
+                        Categoria.findById(idCategoria, function(err, categoria) {
+                            console.log("***categoria***", categoria);
+                            if (err) return res.sendStatus(404);
+                            categoria.productos.add(producto, function(err, obj) {
+                                if (err) return res.sendStatus(404);
+                            });
+                        });
+                        a++;
+                    });
+                    Producto.find({}, function(err, objResult_producto) {
+                        if (err) return res.sendStatus(404);
+                        return res.render('producto', {
+                            objResult_producto: objResult_producto,
+                            mostrarTitulo: mostrarTitulo,
+                            mostrarMensaje: mostrarMensaje,
+                            modo: modo
+                        });
+                    });
+                });
+            }
+        });
+    });
+
+
+    /*if (rep == 0) {
 
                     Producto.create(nuevoProducto, function(err, obj) {
                         Producto.find({}, function(err, objResult_producto) {
@@ -599,11 +629,7 @@ module.exports = function(app) {
                         });
                     });
                 }
-
-
-            }
-        });
-    });
+*/
 
 
     /*var modo;
@@ -876,12 +902,12 @@ module.exports = function(app) {
                     Categoria.create(nuevaCategoria, function(err, categoria) {
                         if (err) return res.sendStatus(404);
                         _.times(rep, function() {
-                            
+
                             var idProducto = _.toInteger(arrayId[a]);
                             Producto.findById(idProducto, function(err, producto) {
                                 if (err) return res.sendStatus(404);
                                 producto.categorias.add(categoria, function(err, obj) {
-                                    if(err) return res.sendStatus(404);
+                                    if (err) return res.sendStatus(404);
                                 });
                             });
                             a++;
@@ -995,7 +1021,99 @@ module.exports = function(app) {
             return res.redirect('categoria');
         }
 
-        Producto.destroyAll({
+        Categoria.findById(idCategoria, function(err, categoria) {
+            if (err) return res.sendStatus(404);
+
+            categoria.productos({}, function(err, productos) {
+                var a = 0;
+                console.log(productos);
+                var rep = productos.length;
+                _.times(rep, function() {
+                    var producto = productos[a];
+                    producto.categorias({}, function(err, verificar_categoria) {
+                        if (verificar_categoria.length == 1) {
+                            var eliminar_categoria = verificar_categoria[0];
+                            Producto.destroyById(eliminar_categoria.id, function(err) {
+                                if(err) return res.sendStatus(404);
+                            });
+                        }
+                    });
+                    a++;
+                });
+                categoria.productos.destroyAll(function(err) {
+                    if (err) return res.sendStatus(404);
+                    Categoria.destroyById(idCategoria, function(err) {
+                        if (err) return res.sendStatus(404);
+                        modo: true;
+                        var mostrarTitulo = "Categoria eliminada";
+                        var mostrarMensaje = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
+                        Categoria.find({}, function(err, objResult) {
+                            if (err) return res.sendStatus;
+                            return res.render('categoria', {
+                                objResult: objResult,
+                                mostrarTitulo: mostrarTitulo,
+                                mostrarMensaje: mostrarMensaje,
+                                modo: modo
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+
+
+
+
+
+
+    /*if (productos.length == 1) {
+
+                    var producto = productos[0];
+                    Producto.destroyById(producto.id, function(err) {
+                        if (err) return res.sendStatus(404);
+                        Categoria.destroyById(idCategoria, function(err) {
+                            if (err) return res.sendStatus(404);
+                            modo: true;
+                            var mostrarTitulo = "Categoria eliminada";
+                            var mostrarMensaje = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
+                            Categoria.find({}, function(err, objResult) {
+                                if (err) return res.sendStatus(404);
+                                return res.render('categoria', {
+                                    objResult: objResult,
+                                    mostrarTitulo: mostrarTitulo,
+                                    mostrarMensaje: mostrarMensaje,
+                                    modo: modo
+                                });
+                            });
+                        });
+                    });
+
+                } else {
+                    categoria.productos.destroyAll(function(err) {
+                        if (err) return res.sendStatus(404);
+                        Categoria.destroyById(idCategoria, function(err) {
+                            if (err) return res.sendStatus(404);
+                            modo: true;
+                            var mostrarTitulo = "Categoria eliminada";
+                            var mostrarMensaje = "La categoria con id " + idCategoria + " fue eliminado exitosamente";
+                            Categoria.find({}, function(err, objResult) {
+                                if (err) return res.sendStatus;
+                                return res.render('categoria', {
+                                    objResult: objResult,
+                                    mostrarTitulo: mostrarTitulo,
+                                    mostrarMensaje: mostrarMensaje,
+                                    modo: modo
+                                });
+                            });
+                        });
+                    });
+                }*/
+
+
+
+    /*Producto.destroyAll({
             categoriaId: idCategoria
         }, function(err, info) {
             console.log("err:", err);
@@ -1017,8 +1135,10 @@ module.exports = function(app) {
                         modo: modo
                     });
                 });
+            });
+        });*/
 
-                /*if (err){
+    /*if (err){
             return res.json({
                 existe:false,
                 id:null
@@ -1029,33 +1149,30 @@ module.exports = function(app) {
                 id:idCategoria
             })
         }*/
-                /*Categoria.find({}, function(err, objResult) {
+    /*Categoria.find({}, function(err, objResult) {
             if (err) return res.sendStatus(404);
             else return res.render('categoria', {
                 objResult: objResult,
                 message: message
             });
         });*/
-            });
-        });
 
 
-        // Producto.find({},function(err,obj){
-        //     for each (var producto in obj){
-        //         if(producto.categoriaId==idCategoria){
-        //             var idProducto = producto.id;
-        //             Producto.destroyById(idProducto,function(err){
-        //                 if(err) return res.sendStatus(404);
-        //             });
-        //         }
-        //     }
-        //     Producto.find({},function(err,obj){
-        //         console.log(obj);
-        //     })
-        // });
+    // Producto.find({},function(err,obj){
+    //     for each (var producto in obj){
+    //         if(producto.categoriaId==idCategoria){
+    //             var idProducto = producto.id;
+    //             Producto.destroyById(idProducto,function(err){
+    //                 if(err) return res.sendStatus(404);
+    //             });
+    //         }
+    //     }
+    //     Producto.find({},function(err,obj){
+    //         console.log(obj);
+    //     })
+    // });
 
 
-    });
 
     //------Quitando la funcion del bton eliminar de editarcategoria
     /*    router.post('/eliminar/categoria', function(req, res) {

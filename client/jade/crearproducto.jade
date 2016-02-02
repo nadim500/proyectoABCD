@@ -28,6 +28,7 @@ html
       if message != undefined
         p #{message}
       form.ui.form(action='/producto' method='post')
+        input#agregar_array(type="hidden" name="arrayId")
         .field
           .fields
             .ten.wide.fields
@@ -41,20 +42,20 @@ html
 
         .field
           label Categoria
-          .fields
-            .three.wide.fields                
-              select.ui.search.dropdown(name='categoriaId')
-                option(value="none") ...
-                each categoria in objResult_categoria
-                  option(value=categoria.id) #{categoria.nombre}
-                i.dropdown.icon
-                .defaul.text Categoria
-                //aqui viene una parte para que se coloree la seleccion, buscade nuevo
-                //input.search(autocomplete='off' tabindex='0')
-                //.default.text Categoria
-                //.menu.transition.hidden(tabindex='-1')
-                //  each categoria in objResult_categoria
-                //    .item.selected(data-value=categoria.id) #{categoria.nombre}
+          
+          .a#conviertete              
+            select(multiple='' name='categoriaId')
+              option(value="") Categorias
+              each categoria in objResult_categoria
+                option(value=categoria.id) #{categoria.nombre}
+              //i.dropdown.icon
+              //.defaul.text Categoria
+              //aqui viene una parte para que se coloree la seleccion, buscade nuevo
+              //input.search(autocomplete='off' tabindex='0')
+              //.default.text Categoria
+              //.menu.transition.hidden(tabindex='-1')
+              //  each categoria in objResult_categoria
+              //    .item.selected(data-value=categoria.id) #{categoria.nombre}
 
         .field
           label Precio
@@ -75,6 +76,19 @@ html
                 textarea(name='descripcion' placeholder='Descripcion')
         a.ui.black.button(href='/producto') Cancelar
         input.ui.black.button(type='submit' value='Crear')
+
+  script.
+    var arrayId;
+    $("#conviertete select")
+      .dropdown({
+        action:'combo',
+        onChange:function(value,text,$choice){
+          arrayId=value;
+          arrayId=JSON.stringify(arrayId);
+          console.log(arrayId);
+          $("#agregar_array").val(arrayId);
+        }
+      });
 
   script.
     $(".form")

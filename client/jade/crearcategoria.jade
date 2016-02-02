@@ -42,33 +42,6 @@ html
               input(type='text' name='nombre' placeholder='Nombre')
 
         .field
-          label Productos
-          .a#conviertete
-            select(multiple="" name="productoId")
-              option(value="") Productos
-              each producto in objResult_producto
-                option(attr_id=producto.id value=producto.id) #{producto.nombre}
-
-          //- .ui.vertical.menu#conviertete
-          //-   .ui.dropdown.item
-          //-     i.dropdown.icon
-          //-     |     Colors
-          //-     select
-          //-       option Red
-          //-       option Black
-          //-       option Blue
-          //-       option Green
-          //-   .ui.dropdown.item
-          //-     i.dropdown.icon
-          //-     |     Sizes
-          //-     select
-          //-       option Small
-          //-       option Medium
-          //-       option Large
-          //-       option Huge
-      
-
-        .field
           label Descripcion
             .fields
               .six.wide.field
@@ -76,22 +49,6 @@ html
         a.ui.black.button(href='/categoria') Cancelar
         input.ui.black.button(type='submit' value='Crear')
 
-  script.
-    var arrayId;
-    $("#conviertete select")
-      .dropdown({
-        action:'combo',
-        onChange:function(value,text,$choice){
-          arrayId=value;
-          arrayId=JSON.stringify(arrayId);
-          console.log(arrayId);
-          $("#agregar_array").val(arrayId);
-
-        }
-      });
-
-
-  
   script.
     $(".form")
       .form({
