@@ -28,6 +28,7 @@ html
     .ui.container
       //.ui.form
       form.ui.form.ss(action='/editarproducto' method='post')
+        input#modificar_producto(type="hidden" name="arrayId")
         each producto in objResult_producto
           .field
             .fields
@@ -43,7 +44,7 @@ html
           .field
             label Categoria
               .a#conviertete
-                select(multiple="" name='idCategoria')
+                select(multiple="" name='idCategoria' value="3")
                   option(value="") Categorias
                   each categoria in objResult_categoria
                     option(value=categoria.id) #{categoria.nombre}
@@ -77,7 +78,18 @@ html
           input.ui.black.button(type='submit' value='Eliminar')
 
   script.
-    $("#conviertete select").dropdown();
+    var agregarId = !{enviarId}
+    console.log(agregarId);
+    $("#conviertete select").val(agregarId)
+      .dropdown({
+        action:'combo',
+        onChange:function(value,text,$choice){
+          arrayId=value;
+          console.log(arrayId);
+          arrayId=JSON.stringify(arrayId);
+          $("#modificar_producto").val(arrayId);
+        }
+      });
 
   script.
     $(".form.ss")

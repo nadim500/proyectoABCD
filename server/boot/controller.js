@@ -334,10 +334,47 @@ module.exports = function(app) {
 
     router.get('/producto/editar', function(req, res) {
         var idProducto = req.query.id;
+        var enviarId = new Array();
+
+        Producto.findById(idProducto, function(err, producto) {
+            if (err) return res.sendStatus(404);
+            producto.categorias({}, function(err, categorias) {
+                if (err) return res.sendStatus(404);
+                rep = categorias.length;
+                var a = 0;
+                _.times(rep, function() {
+                    var idCategoria = categorias[a].id;
+                    enviarId.push(idCategoria);
+                    a++;
+                });
+                enviarId = enviarId.map(function(x) {
+                    x = _.toString(x);
+                    return x;
+                });
+                enviarId = JSON.stringify(enviarId);
+                console.log("array enviado", enviarId);
+                Categoria.find({}, function(err, objResult_categoria) {
+                    Producto.find({
+                        where: {
+                            id: idProducto
+                        }
+                    }, function(err, objResult_producto) {
+                        console.log("________-----_____", objResult_producto);
+                        if (err) return res.sendStatus(404);
+                        return res.render('editarproducto', {
+                            objResult_producto: objResult_producto,
+                            objResult_categoria: objResult_categoria,
+                            enviarId: enviarId
+                        });
+                    });
+                });
+
+            });
+        });
+    });
 
 
-
-        Categoria.find({}, function(err, objResult_categoria) {
+    /*Categoria.find({}, function(err, objResult_categoria) {
             Producto.find({
                 where: {
                     id: idProducto
@@ -350,8 +387,7 @@ module.exports = function(app) {
                     objResult_categoria: objResult_categoria
                 });
             });
-        });
-    });
+        });*/
 
     // if (sesion) return res.render('editarproducto');
     // else return res.redirect('login');
@@ -380,22 +416,58 @@ module.exports = function(app) {
   });*/
 
     router.post('/editarproducto', function(req, res) {
+
+        var arrayId = req.body.arrayId;
+        arrayId = JSON.parse(arrayId);
+        console.log("++++arrayId++++",arrayId);
         var idProducto = req.body.idProducto;
         var modo;
         console.log("*********", idProducto);
-        Producto.findById(idProducto, function(err, objResult) {
+        Producto.findById(idProducto, function(err, producto) {
             if (err) return res.sendStatus(404);
-            var exNombre = objResult.nombre;
+            var exNombre = producto.nombre;
             modo = true;
             var mostrarTitulo = "Edicion de Producto"
             var mostrarMensaje = "El producto " + exNombre + " con id " + idProducto + " fue editado exitosamente";
-            objResult.nombre = req.body.nuevoNombre;
-            objResult.precio = req.body.nuevoPrecio;
-            objResult.cantidad = req.body.nuevoCantidad;
-            objResult.descripcion = req.body.nuevoDescripcion;
-            objResult.categoriaId = req.body.idCategoria;
-            objResult.save();
-            console.log("+++", objResult);
+            producto.nombre = req.body.nuevoNombre;
+            producto.precio = req.body.nuevoPrecio;
+            producto.cantidad = req.body.nuevoCantidad;
+            producto.descripcion = req.body.nuevoDescripcion;
+            //producto.categoriaId = req.body.idCategoria;
+            producto.save();
+            producto.categorias.destroyAll(function(err) {
+                if (err) return res.sendStatus(404);
+                var a = 0;
+                var rep = arrayId.length;
+                _.times(rep, function() {
+                    var idCategoria = _.toInteger(arrayId[a]);
+                    Categoria.findById(idCategoria, function(err, categoria) {
+                        if (err) return res.sendStatus(404);
+                        categoria.productos.add(producto, function(err, obj) {
+                            if (err) return res.sendStatus(404);
+                        });
+                    });
+                    a++;
+                });
+                Producto.find({}, function(err, objResult_producto) {
+                    if (err) return res.sendStatus(404);
+                    return res.render('producto', {
+                        objResult_producto: objResult_producto,
+                        mostrarTitulo: mostrarTitulo,
+                        mostrarMensaje: mostrarMensaje,
+                        modo: modo
+                    });
+                });
+            });
+
+        });
+    });
+
+
+
+
+
+    /*onsole.log("+++", objResult);
             Producto.find({
                 include: ['categorias']
             }, function(err, objResult_producto) {
@@ -409,9 +481,7 @@ module.exports = function(app) {
                     mostrarMensaje: mostrarMensaje,
                     modo: modo
                 });
-            });
-        });
-    });
+            });*/
     //Categoria.find({}, function(err, objResult_categoria) {
     //    Producto.find({}, function(err, objResult_producto) {
     //        if (err) return res.sendStatus(404);
