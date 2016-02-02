@@ -42,12 +42,12 @@ html
 
           .field
             label Categoria
-              .fields
-                .three.wide.fields
-                  select.ui.search.dropdown(name='idCategoria')
-                    each categoria in objResult_categoria
-                      option(value=categoria.id) #{categoria.nombre}
-                  //i.dropdown.icon
+              .a#conviertete
+                select(multiple="" name='idCategoria')
+                  option(value="") Categorias
+                  each categoria in objResult_categoria
+                    option(value=categoria.id) #{categoria.nombre}
+                //i.dropdown.icon
 
           .field
             label Precio
@@ -75,6 +75,9 @@ html
         each producto in objResult_producto
           input(type='hidden' name='idProducto' value=producto.id)
           input.ui.black.button(type='submit' value='Eliminar')
+
+  script.
+    $("#conviertete select").dropdown();
 
   script.
     $(".form.ss")

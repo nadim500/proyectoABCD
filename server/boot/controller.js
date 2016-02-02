@@ -335,6 +335,8 @@ module.exports = function(app) {
     router.get('/producto/editar', function(req, res) {
         var idProducto = req.query.id;
 
+
+
         Categoria.find({}, function(err, objResult_categoria) {
             Producto.find({
                 where: {
@@ -349,10 +351,10 @@ module.exports = function(app) {
                 });
             });
         });
-
-        // if (sesion) return res.render('editarproducto');
-        // else return res.redirect('login');
     });
+
+    // if (sesion) return res.render('editarproducto');
+    // else return res.redirect('login');
 
     //--------------Comentando la funcion del boton editar en producto.jade
 
@@ -1034,7 +1036,7 @@ module.exports = function(app) {
                         if (verificar_categoria.length == 1) {
                             var eliminar_categoria = verificar_categoria[0];
                             Producto.destroyById(eliminar_categoria.id, function(err) {
-                                if(err) return res.sendStatus(404);
+                                if (err) return res.sendStatus(404);
                             });
                         }
                     });
