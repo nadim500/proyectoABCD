@@ -417,9 +417,12 @@ module.exports = function(app) {
 
     router.post('/editarproducto', function(req, res) {
 
-        var arrayId = req.body.arrayId;
-        arrayId = JSON.parse(arrayId);
-        console.log("++++arrayId++++",arrayId);
+
+        var arrayId = req.body.idCategoria;
+        //console.log("++++++categoriaId+++++",categoriaId);
+        //var arrayId = req.body.arrayId;
+        //arrayId = JSON.parse(arrayId);
+        //console.log("++++arrayId++++",arrayId);
         var idProducto = req.body.idProducto;
         var modo;
         console.log("*********", idProducto);
